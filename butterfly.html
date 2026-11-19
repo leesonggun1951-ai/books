@@ -73,6 +73,8 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 #bubble .say::after{content:"";position:absolute;left:var(--ax,40px);top:-16px;border:9px solid transparent;border-bottom-color:#fff}
 #bubble.side .say::after,#bubble.navon .say::after{display:none}
 #bubble.up .say::after{top:auto;bottom:-16px;border-bottom-color:transparent;border-top-color:#fff}
+#bubble.seethru .say{background:rgba(255,255,255,.42);box-shadow:none;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 8px #fff,0 0 1px #fff}
+#bubble.seethru .say::after{opacity:.28}
 #bubble img{width:clamp(54px,6vw,78px);flex:0 0 auto;order:-1}
 #spk{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-size:17px;display:grid;place-items:center}
 #hud{position:absolute;left:12px;top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:70%}
@@ -215,7 +217,7 @@ function langBar(box){box.innerHTML='';LANGS.forEach(([k,lab])=>{const b=documen
 function renderText(){
   $('#coverTitle').textContent=T(UI.title);$('#coverSub').textContent=T(UI.sub);$('#start').textContent=T(UI.start);$('#railTitle').textContent=T(UI.title);
   $('#tiltHint').textContent=T(tiltLive?UI.tiltOn:UI.tiltPC);
-  document.querySelectorAll('.lg:not(#autoBtn)').forEach(b=>{const k=LANGS.find(l=>l[1]===b.textContent)[0];b.setAttribute('aria-pressed',k===LANG)});
+  document.querySelectorAll('.lg:not(#autoBtn):not(#sndBtn)').forEach(b=>{const k=LANGS.find(l=>l[1]===b.textContent)[0];b.setAttribute('aria-pressed',k===LANG)});
   document.querySelectorAll('.ch').forEach((b,i)=>{b.querySelector('.t').textContent=T(CH[i].t);const s=b.querySelector('.soon');if(s)s.textContent=T(UI.soon)});
   document.querySelectorAll('.tab').forEach((b,i)=>b.querySelector('.w').textContent=T(SEC[i].t));
   langHooks.forEach(f=>f());
@@ -241,13 +243,16 @@ function placeBubble(){const bb=$('#bubble');if(!bb||$('#book').hidden)return;co
   else{left=W-w-12;top=H-h-12;mode='side'}
   bb.style.left=left+'px';bb.style.top=top+'px';bb.classList.toggle('up',mode==='up');bb.classList.toggle('side',mode==='side');
   bb.style.setProperty('--ax',cl(cx-left,70,w-30)+'px')}
+function seeThru(){const bb=document.querySelector('#bubble .say');if(!bb||$('#book').hidden)return;const r=bb.getBoundingClientRect();const ov=q=>q.width>2&&q.right>r.left&&q.left<r.right&&q.bottom>r.top&&q.top<r.bottom;
+  const hit=[...document.querySelectorAll('#act img,#marks img')].some(e=>+getComputedStyle(e).opacity>.12&&ov(e.getBoundingClientRect()));$('#bubble').classList.toggle('seethru',hit)}
+setInterval(seeThru,250);
 function say(o,quiet){sayObj=o;$('#sayText').textContent=T(o);$('#bubbleLily').src=A.lilyt.src;requestAnimationFrame(placeBubble);if(!quiet)speak(T(o))}
 langHooks.push(()=>$('#sayText').textContent=T(sayObj));
 let ttsP=null;try{ttsP=window.claude?.use?window.claude.use('tts'):null}catch(e){}
 let AUTO=store.get('auto')!=='0',spTok=0,spLine=null,spEnd=null;
 const LC={ko:'ko-KR',vi:'vi-VN',en:'en-US'};
 function voiceFor(l){try{const p=l.slice(0,2);const vs=speechSynthesis.getVoices();return vs.find(v=>v.lang.replace('_','-').toLowerCase()===LC[l].toLowerCase())||vs.find(v=>v.lang.toLowerCase().startsWith(p))}catch(e){return null}}
-const HAS_SS='speechSynthesis' in window;let voicesReady=null;
+const HAS_SS=!!window.speechSynthesis&&typeof SpeechSynthesisUtterance!=='undefined';let voicesReady=null;
 function loadVoices(){if(!HAS_SS)return Promise.resolve([]);if(voicesReady)return voicesReady;voicesReady=new Promise(res=>{let v=[];try{v=speechSynthesis.getVoices()}catch(e){}if(v.length)return res(v);const done=()=>{let w=[];try{w=speechSynthesis.getVoices()}catch(e){}res(w)};try{speechSynthesis.addEventListener('voiceschanged',done,{once:true})}catch(e){}setTimeout(done,1800)});voicesReady.then(v=>{if(!v.length)voicesReady=null});return voicesReady}
 loadVoices();
 function stopSpeak(){spTok++;try{speechSynthesis.cancel()}catch(e){}ttsP&&ttsP.then(t=>t&&t.stop&&t.stop()).catch(()=>{})}
@@ -265,6 +270,26 @@ $('#spk').onclick=()=>speak(T(sayObj),{force:true});
 
 
 
+
+/* ---------- 소리 점검: 갤럭시탭·Claude 앱 안 화면 대비 ---------- */
+{let unl=false;addEventListener('pointerdown',()=>{if(unl||!HAS_SS)return;unl=true;try{speechSynthesis.getVoices();const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}},true);
+ const GH='https://leesonggun1951-ai.github.io/books/butterfly.html',inApp=/; wv\)/.test(navigator.userAgent);
+ const sc=document.createElement('button');sc.className='lg';sc.id='sndBtn';const f=()=>sc.textContent='🩺 '+T({ko:'소리 점검',vi:'Kiểm tra âm thanh',en:'Sound check'});f();langHooks.push(f);
+ const link=()=>{const a=document.createElement('a');a.href=GH;a.target='_blank';a.rel='noopener';a.textContent=' 👉 '+T({ko:'크롬에서 열기',vi:'Mở bằng Chrome',en:'Open in Chrome'});a.style.cssText='color:#1F6FEB;font-weight:800;text-decoration:underline';$('#sayText').appendChild(a)};
+ sc.onclick=()=>{let vs=[];try{vs=HAS_SS?speechSynthesis.getVoices():[]}catch(e){}const v=HAS_SS?voiceFor(LANG):null;
+  const line=T({ko:'안녕! 나는 릴리야. 내 목소리가 들리니?',vi:'Xin chào! Mình là Lily. Con có nghe thấy giọng mình không?',en:'Hi! I am Lily. Can you hear me?'});
+  if(HAS_SS){try{speechSynthesis.cancel();speechSynthesis.resume();const u=new SpeechSynthesisUtterance(line);u.lang=LC[LANG];if(v)u.voice=v;u.rate=.92;speechSynthesis.speak(u)}catch(e){}}
+  setTimeout(async()=>{let t=null;try{t=ttsP?await Promise.race([ttsP,new Promise(r=>setTimeout(()=>r(null),800))]):null}catch(e){}
+   if(!HAS_SS&&t){try{t.speak(line,{language:LANG,voice:'airy'}).catch(()=>{})}catch(e){}}
+   try{vs=HAS_SS?speechSynthesis.getVoices():[]}catch(e){}const v2=HAS_SS?voiceFor(LANG):null;let msg,lk=false;
+   if((!HAS_SS||inApp)&&!t){msg={ko:'이 화면에서는 읽어 주기 소리가 나오지 않아요. Claude 앱 안에서 열면 소리 기능이 막혀 있어요. 크롬 브라우저에서 열어 주세요.',vi:'Màn hình này không phát được giọng đọc. Mở trong ứng dụng Claude thì âm thanh bị chặn. Hãy mở bằng trình duyệt Chrome.',en:'Read-aloud cannot play here. Inside the Claude app, speech is blocked. Please open it in the Chrome browser.'};lk=true}
+   else if(HAS_SS&&!vs.length&&!t)msg={ko:'태블릿에 목소리가 없어요. 설정 → 일반 → 텍스트 음성 변환(TTS)에서 Google 음성 엔진을 고르고 한국어·베트남어·영어 음성 데이터를 받아 주세요.',vi:'Máy chưa có giọng đọc. Vào Cài đặt → Quản lý chung → Chuyển văn bản thành giọng nói, chọn Google và tải dữ liệu giọng Hàn, Việt, Anh.',en:'No voices on this tablet. Settings → General → Text-to-speech: pick Google and download Korean, Vietnamese and English voice data.'};
+   else if(HAS_SS&&!v2&&!t)msg={ko:`이 언어 목소리가 없어요(목소리 ${vs.length}개). 설정 → 텍스트 음성 변환에서 이 언어 음성 데이터를 받아 주세요.`,vi:`Chưa có giọng cho ngôn ngữ này (${vs.length} giọng). Tải dữ liệu giọng trong cài đặt chuyển văn bản thành giọng nói.`,en:`No voice for this language (${vs.length} voices). Download it in the text-to-speech settings.`};
+   else msg={ko:`들리면 성공! 안 들리면 태블릿 옆 소리 버튼으로 미디어 소리를 올려 주세요. (목소리 ${vs.length}개)`,vi:`Nghe được là ổn! Nếu không, hãy tăng âm lượng phương tiện. (${vs.length} giọng)`,en:`If you hear me, it works! If not, turn up the media volume. (${vs.length} voices)`};
+   say(msg,true);if(lk)link()},900)};
+ $('#langs').appendChild(sc);
+ window.__sndWarn=()=>{if(inApp||!HAS_SS){(ttsP||Promise.resolve(null)).then(t=>{if(!t)sc.click()}).catch(()=>sc.click())}};}
+
 /* ---------- 표지 ---------- */
 $('#coverBg').src=A.bg.src;$('#bgimg').src=A.bg.src;$('#coverLily').src=A.lily.src;
 let lx=innerWidth*.3,ly=innerHeight*.45,tx=innerWidth*.62,ty=innerHeight*.48,tiltLive=false,coverOn=true;
@@ -274,7 +299,7 @@ addEventListener('deviceorientation',e=>{if(e.gamma==null)return;tiltLive=true;
 (function fly(t){if(coverOn){const el=$('#coverLily');lx+=(tx-lx)*.04;ly+=(ty-ly)*.04;const w=el.offsetWidth||180;
   const flap=reduce?1:.75+Math.abs(Math.sin(t/120))*.25;const tilt=Math.max(-20,Math.min(20,(tx-lx)*.05));
   el.style.transform=`translate(${lx-w/2}px,${ly-w*.4+Math.sin(t/400)*8}px) rotate(${tilt}deg) scaleX(${flap})`}requestAnimationFrame(fly)})(0);
-$('#start').onclick=()=>{coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;layout();say(UI.pick);setTimeout(()=>openCh(3),350)};
+$('#start').onclick=()=>{coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;layout();say(UI.pick);setTimeout(()=>openCh(3),350);setTimeout(()=>window.__sndWarn&&window.__sndWarn(),2500)};
 $('#homeBtn').onclick=()=>{stopAll();hideLead();$('#book').hidden=true;$('#cover').hidden=false;coverOn=true};
 
 /* ---------- 레일·탭 ---------- */
@@ -983,4 +1008,9 @@ BOOK.forEach((B,ci)=>{const orig=B.play;B.play=()=>runGames(ci,[orig,()=>memoryG
 renderText();markDone();document.documentElement.lang=LANG;
 })();
 </script>
+
+
+
+
+
 </body></html>
