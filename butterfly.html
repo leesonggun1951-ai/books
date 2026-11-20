@@ -1,4 +1,20 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><title>릴리의 나비 책</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* 261120 교재 전체: 흰 창 바탕은 모두 20% 반투명, 글자는 흰 테두리로 또렷하게 (3D가 비쳐 보이게) */
+#bubble .say,#bubble.seethru .say,.chip,.gnav>span:not(.gnav),#gName,#card,#game,#quiz,#ctl,.tag{background:rgba(255,255,255,.2)!important;box-shadow:none!important;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 7px #fff,0 0 1px #fff}
+#joy{background:rgba(255,255,255,.2)!important}
+/* 261120 투명창 바깥 끝: 검정 5px 선 */
+#bubble .say,.chip,.gnav>span:not(.gnav),#gName,#card,#game,#quiz,#ctl,.tag,#joy{border:5px solid #111!important}
+#card button,#game button,#quiz button,#ctl button{text-shadow:none}
+
+
+/* 261120 반투명 바탕에서도 읽히게: 초록 강조 표시는 글자를 진한 초록으로, 빈 표시는 숨김 */
+.chip.on{background:rgba(31,174,104,.3)!important;color:#0B4D2A!important}
+.chip:empty,#gName:empty,.gnav>span:not(.gnav):empty{display:none!important}
+/* 261120 버튼(글자 상자): 평소 검정 그림자, 마우스를 올리면 초록 형광 그림자 */
+button,a[href],.tag[style*="pointer"],[role=button]{box-shadow:0 3px 7px rgba(0,0,0,.55)!important;transition:box-shadow .15s}
+button:hover,a[href]:hover,.tag[style*="pointer"]:hover,[role=button]:hover{box-shadow:0 0 6px 2px #39FF14,0 0 16px 5px rgba(57,255,20,.75)!important}
+button:disabled,button:disabled:hover{box-shadow:0 2px 4px rgba(0,0,0,.35)!important}
+</style></head><body><title>릴리의 나비 책</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
@@ -293,7 +309,7 @@ $('#spk').onclick=()=>speak(T(sayObj),{force:true});
 /* ---------- 표지 ---------- */
 $('#coverBg').src=A.bg.src;$('#bgimg').src=A.bg.src;$('#coverLily').src=A.lily.src;
 let lx=innerWidth*.3,ly=innerHeight*.45,tx=innerWidth*.62,ty=innerHeight*.48,tiltLive=false,coverOn=true;
-addEventListener('pointermove',e=>{if(!tiltLive){tx=e.clientX;ty=e.clientY}});
+addEventListener('pointermove',e=>{if(!tiltLive){const w=$('#coverLily').offsetWidth||180;tx=e.clientX+w/2+14;ty=e.clientY+w*.4+22}});$('#coverLily').style.opacity=.75;$('#coverLily').style.pointerEvents='none';/* 261120 표지 릴리는 마우스 끝의 오른쪽 아래에서 따라다님(포인터 끝이 나비 왼쪽 위 바깥) */
 addEventListener('deviceorientation',e=>{if(e.gamma==null)return;tiltLive=true;
   tx=innerWidth/2+Math.max(-1,Math.min(1,e.gamma/30))*innerWidth*.4;ty=innerHeight/2+Math.max(-1,Math.min(1,(e.beta-40)/30))*innerHeight*.35;$('#tiltHint').textContent=T(UI.tiltOn)});
 (function fly(t){if(coverOn){const el=$('#coverLily');lx+=(tx-lx)*.04;ly+=(ty-ly)*.04;const w=el.offsetWidth||180;
@@ -325,7 +341,7 @@ function camTo(c,ms){cancelAnimationFrame(camAnim);const a={...cam},t0=performan
 
 /* ---------- 지시선 ---------- */
 let lead=null;// {from:Element, wx,wy}
-function drawLead(){const p=$('#leadPath'),d=$('#leadDot'),d0=$('#leadDot0');if(!lead){p.setAttribute('d','');d.setAttribute('opacity',0);d0.setAttribute('opacity',0);return}
+function drawLead(){const p=$('#leadPath'),d=$('#leadDot'),d0=$('#leadDot0');/* 261120 고침: 설명창이 닫히면 지시선도 지움 */if(lead&&(!lead.from.isConnected||lead.from.offsetParent===null))lead=null;if(!lead){p.setAttribute('d','');d.setAttribute('opacity',0);d0.setAttribute('opacity',0);return}
   const br=lead.from.getBoundingClientRect();let sx,sy;
   if(lead.side==='card'){sx=$('#card').getBoundingClientRect().right;sy=br.top+br.height/2}else{sx=br.right;sy=br.top+br.height/2}
   const[ex,ey]=toScreen(lead.wx,lead.wy);const mx=Math.max(sx+24,Math.min(ex-30,sx+60));
@@ -352,7 +368,7 @@ marks();
 /* ---------- 상태·타이머 ---------- */
 let curCh=-1,curSec='look',jobs=[],raf=0,hudHooks=[];
 function later(f,ms){const id=setTimeout(f,ms);jobs.push(id);return id}
-function stopAll(){FOCUS=null;jobs.forEach(clearTimeout);jobs=[];cancelAnimationFrame(raf);$('#act').innerHTML='';$('#hud').innerHTML='';$('#card').hidden=true;$('#quiz').hidden=true;$('#game').hidden=true;$('#gnav').hidden=true;$('#bnav').querySelectorAll('.stp').forEach(e=>e.remove());navShow();hudHooks=[];
+function stopAll(){lead=null;FOCUS=null;jobs.forEach(clearTimeout);jobs=[];cancelAnimationFrame(raf);$('#act').innerHTML='';$('#hud').innerHTML='';$('#card').hidden=true;$('#quiz').hidden=true;$('#game').hidden=true;$('#gnav').hidden=true;$('#bnav').querySelectorAll('.stp').forEach(e=>e.remove());navShow();hudHooks=[];
   vp.onpointerdown=vp.onpointermove=vp.onpointerup=vp.onpointercancel=null;$('#marks').style.opacity=1;stopSpeak()}
 langHooks.push(()=>hudHooks.forEach(f=>f()));
 function toast(o){const t=$('#toast');t.textContent=T(o);t.classList.add('show');later(()=>t.classList.remove('show'),1300)}
@@ -827,11 +843,11 @@ const CH7={
  play(){hideMarks();const[x,y]=CH[6].at;setFocus(x,y+120);const box={x0:x-280,x1:x+280,y0:y-150,y1:y+150};let bx=x,by=y,tx=x,ty=y,got=0,tiltOn=false;
   const flowers=[];const sc=chip(()=>'',true);sc.textContent='🌸 0/5';
   function plant(){const fx=box.x0+40+Math.random()*(box.x1-box.x0-80),fy=box.y0+60+Math.random()*(box.y1-box.y0-80);const f=sp('flower',fx,fy,80);f.classList.add('pick');flowers.push(f)}
-  for(let i=0;i<3;i++)plant();const b=sp('swal',x,y,150);
+  for(let i=0;i<3;i++)plant();const b=sp('swal',x,y,150);b.style.opacity=.75;
   say(D('태블릿을 기울이거나 손가락을 따라 날아서 빨간 테두리 꽃 5개의 꿀을 먹어!','Nghiêng máy hoặc di ngón tay để bay tới 5 bông hoa viền đỏ!','Tilt the tablet or lead with your finger to visit 5 red-outlined flowers!'));
   const ori=e=>{if(e.gamma==null)return;tiltOn=true;tx=x+Math.max(-1,Math.min(1,e.gamma/25))*270;ty=y+Math.max(-1,Math.min(1,(e.beta-35)/25))*140};
   addEventListener('deviceorientation',ori);const off=()=>removeEventListener('deviceorientation',ori);
-  vp.onpointermove=vp.onpointerdown=e=>{if(tiltOn)return;[tx,ty]=toWorld(e.clientX,e.clientY)};
+  vp.onpointermove=vp.onpointerdown=e=>{if(tiltOn)return;[tx,ty]=toWorld(e.clientX,e.clientY);tx+=88;ty+=82}/* 261120 나비는 손가락 끝의 오른쪽 아래에서 따라옴 */;
   function loop(t){raf=requestAnimationFrame(loop);if(!b.isConnected){off();cancelAnimationFrame(raf);return}bx+=(tx-bx)*.06;by+=(ty-by)*.06;
     bx=Math.max(box.x0,Math.min(box.x1,bx));by=Math.max(box.y0,Math.min(box.y1,by));moveSp(b,bx,by+Math.sin(t/300)*6);b.style.transform=`scaleX(${tx<bx?-1:1}) scaleY(${.8+Math.abs(Math.sin(t/90))*.2})`;
     for(let i=flowers.length-1;i>=0;i--){const f=flowers[i];f.classList.toggle('hot',near([bx,by],[+f.dataset.x,+f.dataset.y],110));if(near([bx,by],[+f.dataset.x,+f.dataset.y],60)){unpick(f);f.style.transition='transform .4s,opacity .4s';f.style.transform='scale(1.4)';f.style.opacity=0;later(()=>f.remove(),400);flowers.splice(i,1);got++;sc.textContent=`🌸 ${got}/5`;
@@ -1466,10 +1482,10 @@ render();
 })();
 </script>
 <style id="mm-book">
-/* 261120 아이 인터넷 책용: 메모 막대를 오른쪽 가운데 세로로(조이스틱·조종판과 안 겹치게) */
-.mm-bar{right:6px!important;bottom:auto!important;top:50%!important;transform:translateY(-50%);flex-direction:column!important}
+/* 261120 아이 인터넷 책용: 메모 막대를 왼쪽 목차 아래 빈 곳에(3D 조종판·조이스틱·말풍선과 안 겹치게) */
+.mm-bar{left:22px!important;right:auto!important;bottom:22px!important;top:auto!important;flex-wrap:wrap!important;max-width:220px;gap:4px!important}
 .mm-bar button{font-size:12px!important;padding:5px 7px!important}
-.mm-panel{right:70px!important;bottom:auto!important;top:12%!important}
-.mm-devmenu{right:70px!important;bottom:auto!important;top:30%!important}
+.mm-panel{left:22px!important;right:auto!important;bottom:110px!important}
+.mm-devmenu{left:22px!important;right:auto!important;bottom:110px!important}
 </style>
 </body></html>

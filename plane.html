@@ -66,6 +66,11 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 .tag.hot{background:#39FF14;border-color:#0B6B00}
 .tag.cyan{background:var(--cyan);border-color:var(--frame)}
 .tag.big{font-size:clamp(15px,1.8vw,22px)}
+/* 261120 3D 명칭 상자: 바탕 늘 20% 반투명, 글자는 흰 테두리로 또렷하게 */
+.tag{background:rgba(255,255,255,.2);box-shadow:none;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 6px #fff}
+.tag.hot{background:rgba(57,255,20,.2)}
+.tag.cyan{background:color-mix(in srgb,var(--cyan) 20%,transparent)}
+
 .meter{position:absolute;pointer-events:none;font-weight:700}
 
 /* HUD */
@@ -93,6 +98,10 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 #ctl .seg[aria-pressed="true"]{background:var(--frame);color:#fff}
 #ctl .read{font-size:15px;font-weight:600;line-height:1.4}
 #ctl .read b{font-size:18px}
+/* 261120 조종판 바탕 늘 20% 반투명, 글자는 흰 테두리로 또렷하게 */
+#ctl{background:rgba(255,255,255,.2)!important;box-shadow:none!important;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 7px #fff}
+#ctl .seg{text-shadow:none}
+
 .bar{height:14px;border-radius:7px;background:#E3EDF8;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--green);width:0;transition:width .15s}
 #card{position:absolute;left:12px;top:12px;bottom:12px;width:min(46%,440px);background:rgba(255,255,255,.97);border-radius:18px;padding:14px 16px;overflow-y:auto;box-shadow:0 6px 0 rgba(0,0,0,.15);z-index:5}
@@ -143,6 +152,36 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
   #bubble{max-width:92%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* 261120 교재 전체: 흰 창 바탕은 모두 20% 반투명, 글자는 흰 테두리로 또렷하게 (3D가 비쳐 보이게) */
+#bubble .say,#bubble.seethru .say,.chip,.gnav>span:not(.gnav),#gName,#card,#game,#quiz,#ctl,.tag{background:rgba(255,255,255,.2)!important;box-shadow:none!important;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 7px #fff,0 0 1px #fff}
+#joy{background:rgba(255,255,255,.2)!important}
+/* 261120 투명창 바깥 끝: 검정 5px 선 */
+#bubble .say,.chip,.gnav>span:not(.gnav),#gName,#card,#game,#quiz,#ctl,.tag,#joy{border:5px solid #111!important}
+#card button,#game button,#quiz button,#ctl button{text-shadow:none}
+
+
+/* 261120 반투명 바탕에서도 읽히게: 초록 강조 표시는 글자를 진한 초록으로, 빈 표시는 숨김 */
+.chip.on{background:rgba(31,174,104,.3)!important;color:#0B4D2A!important}
+.chip:empty,#gName:empty,.gnav>span:not(.gnav):empty{display:none!important}
+/* 261120 버튼(글자 상자): 평소 검정 그림자, 마우스를 올리면 초록 형광 그림자 */
+button,a[href],.tag[style*="pointer"],[role=button]{box-shadow:0 3px 7px rgba(0,0,0,.55)!important;transition:box-shadow .15s}
+button:hover,a[href]:hover,.tag[style*="pointer"]:hover,[role=button]:hover{box-shadow:0 0 6px 2px #39FF14,0 0 16px 5px rgba(57,255,20,.75)!important}
+button:disabled,button:disabled:hover{box-shadow:0 2px 4px rgba(0,0,0,.35)!important}
+
+/* 261120 시간여행 설명판(가운데, 큼) */
+#tt{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:min(92%,680px);pointer-events:auto;background:rgba(255,255,255,.2);border:5px solid #111;border-radius:18px;padding:8px 10px;text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 7px #fff;z-index:6}
+#tt .tth{font-weight:800;font-size:18px;text-align:center}#tt .tth span{font-size:14px;color:#55677E;margin-left:6px}
+#tt .ttm{display:flex;align-items:stretch;gap:8px;margin-top:4px}
+#tt .ttc{flex:1;text-align:center;min-width:0}#tt .ttc>b{display:block;font-size:34px;line-height:1;color:var(--orange)}#tt .ttc em{display:block;font-style:normal;font-weight:800;font-size:22px;margin:2px 0}
+#tt .ttc p{margin:3px 0;font-size:15px;font-weight:600}
+#tt .ttbar{display:block;height:10px;border-radius:6px;background:rgba(0,0,0,.15);overflow:hidden;margin:4px 8px}#tt .ttbar s{display:block;height:100%;background:linear-gradient(90deg,#39C26B,#FFB020,#FF3B30)}
+#tt .ttb{flex:0 0 118px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:30px;font-weight:900;background:var(--orange);color:#fff;border-radius:16px;padding:6px;text-shadow:none}
+#tt .ttb small{font-size:13px;line-height:1.25;font-weight:700}
+#tt .ttb:disabled{background:#B9C3CF;opacity:.6}
+#tt .tty{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:6px}#tt .tty button{background:var(--tab);border-radius:999px;padding:3px 9px;font-weight:700;font-size:13px;text-shadow:none}
+#tt .tty button[aria-pressed="true"]{background:var(--frame);color:#fff}
+@media (max-width:820px){#tt .ttb{flex-basis:84px;font-size:24px}#tt .ttc>b{font-size:26px}#tt .ttc em{font-size:18px}}
 </style>
 
 <section id="cover">
@@ -289,7 +328,7 @@ $('#spk').onclick=()=>speak(T(sayObj),{force:true});
 $('#coverPlane').src=A.cover.src;$('#coverLily').src=A.lily.src;
 let lx=innerWidth*.3,ly=innerHeight*.45,tx=innerWidth*.62,ty=innerHeight*.48,tiltLive=false,coverOn=true;
 let TILT={roll:0,pitch:0,live:false};
-addEventListener('pointermove',e=>{if(!tiltLive){tx=e.clientX;ty=e.clientY}});
+addEventListener('pointermove',e=>{if(!tiltLive){const w=$('#coverLily').offsetWidth||180;tx=e.clientX+w/2+14;ty=e.clientY+w*.4+22}});$('#coverLily').style.opacity=.75;$('#coverLily').style.pointerEvents='none';/* 261120 표지 릴리는 마우스 끝의 오른쪽 아래에서 따라다님(포인터 끝이 나비 왼쪽 위 바깥) */
 addEventListener('deviceorientation',e=>{if(e.gamma==null)return;tiltLive=true;TILT.live=true;
   const land=Math.abs(window.orientation||0)===90||(screen.orientation&&screen.orientation.type.startsWith('landscape'));
   const g=land?(window.orientation===-90?-e.beta:e.beta):e.gamma,b=land?(window.orientation===-90?e.gamma:-e.gamma):e.beta-40;
@@ -310,19 +349,20 @@ scene.fog=new THREE.Fog(0xCFE8FF,60,260);
 const cam3=new THREE.PerspectiveCamera(40,1,.05,1400);
 /* 하늘 쉐이더 + 해(그림자): 비행기 방향을 알기 쉽게 */
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-const HEMI=new THREE.HemisphereLight(0xEAF4FF,0xB89A70,1.0);scene.add(HEMI);
-const SUNDIR=new THREE.Vector3().setFromSphericalCoords(1,(90-15)*Math.PI/180,Math.PI*.72);
-const sun=new THREE.DirectionalLight(0xFFF1D6,3.2);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const SC=sun.shadow.camera;SC.left=SC.bottom=-14;SC.right=SC.top=14;SC.near=1;SC.far=160;sun.shadow.bias=-.0004;sun.shadow.normalBias=.02;scene.add(sun);scene.add(sun.target);
+const HEMI=new THREE.HemisphereLight(0xEAF4FF,0xB89A70,.62);scene.add(HEMI);
+const SUNDIR=new THREE.Vector3().setFromSphericalCoords(1,(90-24)*Math.PI/180,Math.PI*.72);
+const sun=new THREE.DirectionalLight(0xFFF1D6,3.7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const SC=sun.shadow.camera;SC.left=SC.bottom=-14;SC.right=SC.top=14;SC.near=1;SC.far=160;sun.shadow.bias=-.0004;sun.shadow.normalBias=.02;scene.add(sun);scene.add(sun.target);
 const SKYM=new Sky();SKYM.scale.setScalar(900);const SU=SKYM.material.uniforms;SU.turbidity.value=2.5;SU.rayleigh.value=2.6;SU.mieCoefficient.value=.004;SU.mieDirectionalG.value=.85;SU.sunPosition.value.copy(SUNDIR);SKYM.visible=false;
 const SUNGLOW=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');const gr=g.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(255,255,240,1)');gr.addColorStop(.18,'rgba(255,240,180,.95)');gr.addColorStop(.45,'rgba(255,210,120,.3)');gr.addColorStop(1,'rgba(255,200,100,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),blending:THREE.AdditiveBlending,depthWrite:false,fog:false,toneMapped:false,transparent:true}));SUNGLOW.scale.setScalar(150);scene.add(SUNGLOW);
 function sunFollow(){const c=(typeof PL!=='undefined'&&PL.visible)?PL.position:cam.t;sun.target.position.copy(c);sun.position.copy(c).addScaledVector(SUNDIR,70);SUNGLOW.visible=scene.background!==TUN_BG();const wantSh=SUNGLOW.visible&&!LOWFX;if(sun.castShadow!==wantSh){sun.castShadow=wantSh}SUNGLOW.position.copy(cam3.position).addScaledVector(SUNDIR,800)}
 
-// 키티호크 모래 언덕
+// 키티호크 모래 언덕 (261120: x축 따라 비행 길은 평평, 언덕은 낮게·옆으로만)
+function GH(x,z){const r=Math.hypot(x,z);if(r<18)return 0;const cf=clamp((Math.abs(z)-16)/34,0,1);return Math.max(0,(Math.sin(x*.045)+Math.cos(z*.06+1))*2*Math.min(1,(r-18)/30)*cf)}
 const ground=(()=>{const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');g.fillStyle='#E4CF9E';g.fillRect(0,0,256,256);
   for(let i=0;i<2600;i++){g.fillStyle=`rgba(${150+Math.random()*60|0},${120+Math.random()*50|0},${70+Math.random()*40|0},${Math.random()*.25})`;g.fillRect(Math.random()*256,Math.random()*256,2,2)}
   const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(60,60);t.colorSpace=THREE.SRGBColorSpace;
   const geo=new THREE.PlaneGeometry(1200,1200,120,120);geo.rotateX(-Math.PI/2);const p=geo.attributes.position;
-  for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);const r=Math.hypot(x,z);p.setY(i,r<18?0:Math.max(0,(Math.sin(x*.045)+Math.cos(z*.06+1))*3*Math.min(1,(r-18)/30)))}
+  for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);const r=Math.hypot(x,z);p.setY(i,GH(x,z))}
   geo.computeVertexNormals();const m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:t}));m.receiveShadow=true;scene.add(m);return m})();
 // 구름
 const cloudTex=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');const gr=g.createRadialGradient(64,64,4,64,64,62);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.6,'rgba(255,255,255,.75)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})();
@@ -358,6 +398,8 @@ function tex(k,rep){const key=k+'_'+rep;if(TEX[key])return TEX[key];const t=TLD.
 const MATTEX={cloth:['cloth',1,0xF6F0E2],spruce:['wood',1,0xFFFFFF],alu:['alu',2,0xFFFFFF],iron:['iron',3,0xF0F0F0],engine:['iron',3,0xF0F0F0],brass:['brass',1,0xFFFFFF],tin:['alu',1,0xF2F2F2],copper:['brass',1,0xE8A070],steel:['alu',1,0xDDE2E8]};
 function ensureUV(g,unit){if(g.attributes.uv)return;const p=g.attributes.position;g.computeBoundingBox();const b=g.boundingBox,sz=b.getSize(V3());const ax=[['x',sz.x],['y',sz.y],['z',sz.z]].sort((a,c)=>c[1]-a[1]);const[a1,a2]=[ax[0][0],ax[1][0]];
   const uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){const v={x:p.getX(i),y:p.getY(i),z:p.getZ(i)};uv[i*2]=(v[a1]-b.min[a1])/unit;uv[i*2+1]=(v[a2]-b.min[a2])/unit}g.setAttribute('uv',new THREE.BufferAttribute(uv,2))}
+// 261120 모든 입체 모형에 그림자(스스로 드리우고 받기) — 반투명·선·평면 표시는 제외
+let SHN=0;function autoShadow(){scene.traverse(o=>{if(!o.isMesh||o.userData.noSh||o.castShadow&&o.receiveShadow)return;const m=Array.isArray(o.material)?o.material[0]:o.material;if(!m||m.transparent||m.isMeshBasicMaterial||m.isShadowMaterial)return;o.castShadow=o.receiveShadow=true})}
 function applyTextures(root){root.traverse(o=>{if(!o.isMesh||o.userData.cap)return;o.castShadow=true;o.receiveShadow=true;const m=o.material,d=MATTEX[m&&m.name];if(!d)return;ensureUV(o.geometry,d[0]==='cloth'?.6:.35);if(['alu','iron'].includes(d[0])){m.bumpMap=tex(d[0],d[1]);m.bumpScale=1.5;m.roughnessMap=m.bumpMap}else{m.map=tex(d[0],d[1]);m.color.set(d[2])}m.needsUpdate=true})}
 function loadFlyer(){return new Promise((res,rej)=>{const bin=Uint8Array.from(atob(GLB),c=>c.charCodeAt(0));
   new GLTFLoader().parse(bin.buffer,'',g=>{FLY=g.scene;FLY.position.copy(FLYOFF);PL.add(FLY);applyTextures(FLY);
@@ -378,8 +420,8 @@ function camTo(v,ms){ms=reduce?0:(ms??900);const a={t:cam.t.clone(),d:cam.d,yaw:
 function camStep(now){if(!camAnim)return;const{a,b,t0,ms,res}=camAnim;const k=ms?Math.min(1,(now-t0)/ms):1;const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
   cam.t.lerpVectors(a.t,b.t,e);cam.d=a.d+(b.d-a.d)*e;cam.yaw=a.yaw+(b.yaw-a.yaw)*e;cam.pitch=a.pitch+(b.pitch-a.pitch)*e;if(k>=1){camAnim=null;res()}}
 // 손가락으로 돌려 보기
-let orbitOn=false,ENGCLICK=true;const ptrs=new Map();let pinch0=0;
-vp.addEventListener('pointerdown',e=>{if(!orbitOn||e.target!==$('#gl'))return;if(camAnim){const r=camAnim.res;camAnim=null;r()}ptrs.set(e.pointerId,[e.clientX,e.clientY]);if(ptrs.size===2){const[p,q]=[...ptrs.values()];pinch0=Math.hypot(p[0]-q[0],p[1]-q[1])}});
+let orbitOn=false,ENGCLICK=true,orbitBlock=null;const ptrs=new Map();let pinch0=0;
+vp.addEventListener('pointerdown',e=>{if(!orbitOn||e.target!==$('#gl')||(orbitBlock&&orbitBlock(e)))return;if(camAnim){const r=camAnim.res;camAnim=null;r()}ptrs.set(e.pointerId,[e.clientX,e.clientY]);if(ptrs.size===2){const[p,q]=[...ptrs.values()];pinch0=Math.hypot(p[0]-q[0],p[1]-q[1])}});
 addEventListener('pointermove',e=>{if(!orbitOn||!ptrs.has(e.pointerId))return;const o=ptrs.get(e.pointerId);
   if(ptrs.size===1){cam.yaw+= (e.clientX-o[0])*.008;cam.pitch=clamp(cam.pitch+(e.clientY-o[1])*.006,-.35,1.35)}
   ptrs.set(e.pointerId,[e.clientX,e.clientY]);if(ptrs.size===2){const[p,q]=[...ptrs.values()];const d=Math.hypot(p[0]-q[0],p[1]-q[1]);if(pinch0){cam.d=clamp(cam.d*pinch0/d,1.5,220)}pinch0=d}});
@@ -392,7 +434,7 @@ let tags=[];
 function tag3(o,fn,cls){const el=document.createElement('div');el.className='tag'+(cls?' '+cls:'');$('#ov').appendChild(el);const f=()=>el.textContent=T(o);f();hudHooks.push(f);const t={el,fn,o};tags.push(t);return t}
 function updTags(){const r=vp.getBoundingClientRect();tags.forEach(t=>{const v=t.fn();if(!v){t.el.style.display='none';return}const[x,y,ok]=toScreen(v);t.el.style.display=ok?'':'none';t.el.style.left=(x-r.left)+'px';t.el.style.top=(y-r.top)+'px'})}
 let lead=null;
-function drawLead(){const p=$('#leadPath'),d=$('#leadDot'),d0=$('#leadDot0');if(!lead){p.setAttribute('d','');d.setAttribute('opacity',0);d0.setAttribute('opacity',0);return}
+function drawLead(){const p=$('#leadPath'),d=$('#leadDot'),d0=$('#leadDot0');/* 261120 고침: 설명창이 닫히면 지시선도 지움(퀴즈에 선이 남던 문제) */if(lead&&(!lead.from.isConnected||lead.from.offsetParent===null))lead=null;if(!lead){p.setAttribute('d','');d.setAttribute('opacity',0);d0.setAttribute('opacity',0);return}
   const br=lead.from.getBoundingClientRect();let sx,sy;if(lead.side==='card'){sx=$('#card').getBoundingClientRect().right;sy=br.top+br.height/2}else{sx=br.right;sy=br.top+br.height/2}
   const[ex,ey]=toScreen(typeof lead.pt==='function'?lead.pt():lead.pt);const mx=Math.max(sx+24,Math.min(ex-30,sx+60));
   p.setAttribute('d',`M${sx} ${sy} L${mx} ${sy} L${ex} ${ey}`);d.setAttribute('cx',ex);d.setAttribute('cy',ey);d.setAttribute('opacity',1);d0.setAttribute('cx',sx);d0.setAttribute('cy',sy);d0.setAttribute('opacity',1);
@@ -421,7 +463,7 @@ let curCh=-1,curSec='look',jobs=[],ticks=[],hudHooks=[];
 function later(f,ms){const id=setTimeout(f,ms);jobs.push(id);return id}
 function tick(f){ticks.push(f);return f}
 function clearStage(){while(STAGE.children.length){const o=STAGE.children.pop();o.traverse(m=>{if(m.geometry)m.geometry.dispose()})}}
-function stopAll(){jobs.forEach(clearTimeout);jobs=[];ticks=[];clearStage();$('#ov').innerHTML='';tags=[];$('#hud').innerHTML='';$('#ctl').innerHTML='';$('#ctl').hidden=true;$('#card').hidden=true;$('#quiz').hidden=true;$('#game').hidden=true;$('#joy').hidden=true;$('#gnav').hidden=true;
+function stopAll(){orbitBlock=null;lead=null;jobs.forEach(clearTimeout);jobs=[];ticks=[];clearStage();$('#ov').innerHTML='';tags=[];$('#hud').innerHTML='';$('#ctl').innerHTML='';$('#ctl').hidden=true;$('#card').hidden=true;$('#quiz').hidden=true;$('#game').hidden=true;$('#joy').hidden=true;$('#gnav').hidden=true;
   $('#bnav').querySelectorAll('.stp').forEach(e=>e.remove());navShow();hudHooks=[];orbitOn=true;ENGCLICK=true;setSection(null);showMoving(false);driveOnly(false);pickKeys=[];pickFn=null;pickObjs=[];hoverK=null;$('#gl').style.cursor='';glowOff();follow=null;homePose();CLOUDS.visible=true;ground.visible=true;scene.background=SKY;scene.fog.color.set(0xCFE8FF);scene.fog.near=60;scene.fog.far=260;
   vp.onpointerdown=vp.onpointermove=vp.onpointerup=vp.onpointercancel=null;if(TILT.g!=null){TILT.g0=TILT.g;TILT.b0=TILT.b}stopSpeak()}
 langHooks.push(()=>hudHooks.forEach(f=>f()));
@@ -472,7 +514,7 @@ addEventListener('resize',resize);
 let lastT=performance.now();
 function loop(now){requestAnimationFrame(loop);if($('#book').hidden)return;const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
   if(vp.clientWidth&&Math.abs(R.domElement.width/R.getPixelRatio()-vp.clientWidth)>1)resize();
-  for(const f of ticks.slice())f(dt,now/1000);applyCtrl(dt);camStep(now);if(follow)follow(dt);applyCam();updTags();if(lead)drawLead();if(++seeN%8===0)seeThru();perfWatch(dt);sunFollow();R.render(scene,cam3)}
+  for(const f of ticks.slice())f(dt,now/1000);applyCtrl(dt);camStep(now);if(follow)follow(dt);applyCam();updTags();if(lead)drawLead();if(++seeN%8===0)seeThru();perfWatch(dt);sunFollow();if((++SHN)%30===1)autoShadow();R.render(scene,cam3)}
 // 규칙 0절 39번 ⑦: 느리면(초당 24장 아래가 3초 이어지면) 그림자부터 끄고, 그래도 느리면 화면 해상도를 낮춘다
 let LOWFX=false,pfT=0,pfN=0,pfLow=0,pfStep=0;
 function perfWatch(dt){pfT+=dt;pfN++;if(pfT<1)return;const fps=pfN/pfT;pfT=0;pfN=0;if(fps<24)pfLow++;else pfLow=0;if(pfLow>=3){pfLow=0;if(pfStep===0){LOWFX=true;pfStep=1}else if(pfStep===1){R.setPixelRatio(1);resize();pfStep=2}}}
@@ -579,19 +621,19 @@ function makePlane(s){const g=new THREE.Group();const body=M(s.col,{roughness:.3
   g.spin=dt=>props.forEach(p=>p.parent.rotation.x+=dt*30);return g}
 const EVO=[
  {y:1903,name:D('라이트 플라이어','Wright Flyer','Wright Flyer'),kmh:48,seats:1,flyer:true,note:D('엔진 달고 조종한 첫 비행기','Máy bay có động cơ, điều khiển được đầu tiên','The first powered plane a pilot could steer')},
- {y:1909,name:D('블레리오 11호','Blériot XI','Blériot XI'),kmh:75,seats:1,note:D('바다(영국 해협)를 처음 건넌 비행기, 37분','Bay qua eo biển Manche lần đầu, 37 phút','First to fly across the English Channel, 37 minutes'),
+ {mk:'bleriot',y:1909,name:D('블레리오 11호','Blériot XI','Blériot XI'),kmh:75,seats:1,note:D('바다(영국 해협)를 처음 건넌 비행기, 37분','Bay qua eo biển Manche lần đầu, 37 phút','First to fly across the English Channel, 37 minutes'),
   s:{len:7.6,span:7.8,r:.38,col:0xD8C69B,wing:{root:2,tip:1.8,sweep:0,y:.6,x:2.6},tail:{span:2,root:.8,tip:.7,sweep:0,fin:1,col:0xD8C69B},eng:[{t:'prop',x:3.9,y:0,z:0,r:1}]}},
- {y:1927,name:D('스피릿 오브 세인트루이스','Spirit of St. Louis','Spirit of St. Louis'),kmh:173,seats:1,note:D('대서양을 혼자 건넘. 뉴욕→파리 33시간 30분','Một mình bay qua Đại Tây Dương: New York → Paris 33,5 giờ','Flew alone across the Atlantic: New York to Paris in 33.5 hours'),
+ {mk:'spirit',y:1927,name:D('스피릿 오브 세인트루이스','Spirit of St. Louis','Spirit of St. Louis'),kmh:173,seats:1,note:D('대서양을 혼자 건넘. 뉴욕→파리 33시간 30분','Một mình bay qua Đại Tây Dương: New York → Paris 33,5 giờ','Flew alone across the Atlantic: New York to Paris in 33.5 hours'),
   s:{len:8.4,span:14,r:.7,col:0xC9CED6,metal:1,wing:{root:2.1,tip:2.1,sweep:0,y:1.15,x:2.2},tail:{span:3,root:1,tip:.8,sweep:.2,fin:1.4},eng:[{t:'prop',x:4.4,y:0,z:0,r:1.3}]}},
- {y:1936,name:D('DC-3','DC-3','DC-3'),kmh:333,seats:21,note:D('금속으로 만든 튼튼한 여객기. 여행이 쉬워졌어','Máy bay chở khách bằng kim loại, đi lại dễ hơn','A strong metal airliner that made air travel common'),
+ {mk:'dc3',y:1936,name:D('DC-3','DC-3','DC-3'),kmh:333,seats:21,note:D('금속으로 만든 튼튼한 여객기. 여행이 쉬워졌어','Máy bay chở khách bằng kim loại, đi lại dễ hơn','A strong metal airliner that made air travel common'),
   s:{len:19.7,span:29,r:1.25,col:0xC9CED6,metal:1,wing:{root:4.6,tip:1.6,sweep:2.2,y:-.55,x:3.5,dih:5},tail:{span:8,root:2.4,tip:1.2,sweep:1,fin:3.6},eng:[{t:'prop',x:5.2,y:-.6,z:5.6,r:1.75},{t:'prop',x:5.2,y:-.6,z:-5.6,r:1.75}]}},
- {y:1952,name:D('코멧 (첫 제트 여객기)','Comet (máy bay phản lực chở khách đầu tiên)','Comet (first jet airliner)'),kmh:740,seats:36,note:D('프로펠러 대신 제트 엔진. 두 배 넘게 빨라졌어','Động cơ phản lực thay cánh quạt, nhanh gấp đôi','Jet engines instead of propellers, more than twice as fast'),
+ {mk:'comet',y:1952,name:D('코멧 (첫 제트 여객기)','Comet (máy bay phản lực chở khách đầu tiên)','Comet (first jet airliner)'),kmh:740,seats:36,note:D('프로펠러 대신 제트 엔진. 두 배 넘게 빨라졌어','Động cơ phản lực thay cánh quạt, nhanh gấp đôi','Jet engines instead of propellers, more than twice as fast'),
   s:{len:28,span:35,r:1.5,col:0xF2F4F7,stripe:0x1F4FA8,metal:1,wing:{root:8,tip:2.2,sweep:6,y:-.4,x:4.5,dih:3},tail:{span:10,root:3,tip:1.4,sweep:2,fin:4.5},eng:[{t:'jet',x:2.2,y:-.6,z:2.6,r:.55,l:5},{t:'jet',x:2.2,y:-.6,z:-2.6,r:.55,l:5}]}},
- {y:1970,name:D('보잉 747 (점보)','Boeing 747 (Jumbo)','Boeing 747 (Jumbo)'),kmh:900,seats:400,note:D('2층 혹이 있는 큰 비행기. 400명 넘게 태워','Máy bay lớn có “bướu” hai tầng, chở hơn 400 người','A giant with a hump, carrying 400+ people'),
+ {mk:'b747',y:1970,name:D('보잉 747 (점보)','Boeing 747 (Jumbo)','Boeing 747 (Jumbo)'),kmh:900,seats:400,note:D('2층 혹이 있는 큰 비행기. 400명 넘게 태워','Máy bay lớn có “bướu” hai tầng, chở hơn 400 người','A giant with a hump, carrying 400+ people'),
   s:{len:70.6,span:59.6,r:3.2,col:0xF2F4F7,stripe:0xD7262E,metal:1,hump:1,wing:{root:15,tip:4,sweep:19,y:-.5,x:9,dih:7},tail:{span:22,root:7,tip:2.5,sweep:6,fin:11},eng:[{t:'jet',x:6,y:-3,z:11.5,r:1.3,l:6},{t:'jet',x:6,y:-3,z:-11.5,r:1.3,l:6},{t:'jet',x:-1,y:-2.6,z:20,r:1.3,l:6},{t:'jet',x:-1,y:-2.6,z:-20,r:1.3,l:6}]}},
- {y:1976,name:D('콩코드 (초음속)','Concorde (siêu thanh)','Concorde (supersonic)'),kmh:2180,seats:100,note:D('소리보다 2배 빠르게! 삼각형 날개','Nhanh gấp đôi âm thanh! Cánh hình tam giác','Twice the speed of sound! Triangle wings'),
+ {mk:'concorde',y:1976,name:D('콩코드 (초음속)','Concorde (siêu thanh)','Concorde (supersonic)'),kmh:2180,seats:100,note:D('소리보다 2배 빠르게! 삼각형 날개','Nhanh gấp đôi âm thanh! Cánh hình tam giác','Twice the speed of sound! Triangle wings'),
   s:{len:61.7,span:25.6,r:1.45,col:0xF7F8FA,metal:1,delta:1,wing:{root:32,tip:2,sweep:28,y:-.6,x:12},eng:[{t:'jet',x:-14,y:-1.6,z:3.6,r:.75,l:9},{t:'jet',x:-14,y:-1.6,z:-3.6,r:.75,l:9},{t:'jet',x:-14,y:-1.6,z:5.3,r:.75,l:9},{t:'jet',x:-14,y:-1.6,z:-5.3,r:.75,l:9}]}},
- {y:2007,name:D('에어버스 A380','Airbus A380','Airbus A380'),kmh:900,seats:525,note:D('지금 가장 큰 여객기. 2층 전체가 객실','Máy bay chở khách lớn nhất, cả hai tầng là khoang khách','The largest airliner, two full decks'),
+ {mk:'a380',y:2007,name:D('에어버스 A380','Airbus A380','Airbus A380'),kmh:900,seats:525,note:D('지금 가장 큰 여객기. 2층 전체가 객실','Máy bay chở khách lớn nhất, cả hai tầng là khoang khách','The largest airliner, two full decks'),
   s:{len:72.7,span:79.8,r:3.6,tall:1.35,col:0xF4F6F9,stripe:0x1E3A7A,metal:1,wing:{root:18,tip:4.5,sweep:22,y:-.55,x:10,dih:6},tail:{span:30,root:8,tip:3,sweep:7,fin:12},eng:[{t:'jet',x:4,y:-3.6,z:15,r:1.5,l:7},{t:'jet',x:4,y:-3.6,z:-15,r:1.5,l:7},{t:'jet',x:-4,y:-3,z:26,r:1.5,l:7},{t:'jet',x:-4,y:-3,z:-26,r:1.5,l:7}]}}];
 const DISC=canvasTex(32,32,c=>{c.fillStyle='#fff';c.beginPath();c.arc(16,16,14,0,7);c.fill()});
 // 공기 흐름 점(유선)
@@ -616,6 +658,13 @@ function partsHunt(keys,ci){camTo({t:[0,1.3,0],d:13,yaw:-.75,pitch:.35},700);orb
   pickable(PARTKEYS,k=>{if(i>=list.length)return;if(k===list[i]){const tg=tag3(PN[k],()=>P(k),'hot');i++;sc.textContent=`⭐ ${i}/${list.length}`;speak(T(nice()));if(i<list.length)later(ask,900);else{toast(D('부품 박사!','Chuyên gia!','Parts expert!'));say(D('부품을 모두 찾았어! 손가락으로 돌려 보면서 다시 구경해 봐.','Tìm đủ hết rồi! Xoay máy bay để xem lại nhé.','You found them all! Spin the plane to look again.'));done(ci)}}
     else{miss++;speak(T(PN[k]));toast(PN[k])}});ask();hudHooks.push(()=>{if(i<list.length)ask()})}
 const GPARTS=D('부품 찾기','Tìm bộ phận','Find the part');
+
+// 261120 투시 보기: 가려진 부분은 20% 반투명으로 비쳐 보이고, 모서리 선을 그려 입체감을 살림
+function xray(root,{ghost=.2,edge=0x2B2118,edgeHidden=.35,ang=25}={}){const list=[];root.traverse(o=>{if(o.isMesh&&!o.userData.xr)list.push(o)});
+  list.forEach(o=>{const gm=new THREE.MeshBasicMaterial({color:(o.material.color||new THREE.Color(0xffffff)).clone().lerp(new THREE.Color(0x9DB4CC),.35),transparent:true,opacity:ghost,depthWrite:false,depthFunc:THREE.GreaterDepth,side:THREE.DoubleSide});
+    const gh=new THREE.Mesh(o.geometry,gm);gh.userData.xr=gh.userData.noSh=true;gh.renderOrder=5;o.add(gh);
+    const eg=new THREE.EdgesGeometry(o.geometry,ang);const ln=new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:edge,transparent:true,opacity:.9}));ln.userData.xr=true;o.add(ln);
+    const lh=new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:edge,transparent:true,opacity:edgeHidden,depthWrite:false,depthFunc:THREE.GreaterDepth}));lh.userData.xr=true;lh.renderOrder=6;o.add(lh)});return root}
 
 /* ================= 1장: 새처럼 날고 싶어 ================= */
 const SKYV={t:[0,6,0],d:16,yaw:-1.25,pitch:.1};
@@ -669,22 +718,32 @@ const CH1={
   Q(D('새는 방향을 어떻게 바꿀까?','Chim đổi hướng thế nào?','How does a bird turn?'),[['↗️',D('날개를 기울여','Nghiêng cánh','Tilting its wings'),1],['👂',D('귀를 움직여','Cử động tai','Moving its ears')],['😴',D('잠을 자서','Đi ngủ','Sleeping')]],D('라이트 형제도 이걸 보고 배웠어.','Anh em Wright cũng học từ điều này.','The Wrights learned from this too.'))],0)}};
 // 글라이더 날리기: 끌었다 놓기(새총처럼)
 function gliderGame(){hidePlane();const hillX=-12,hillH=9;const dune=add(new THREE.Mesh(new THREE.ConeGeometry(12,hillH,40),M(0xE2CB97)),hillX,hillH/2,0);
-  const g=add(glider('lil'),hillX,hillH+.4,0);g.scale.setScalar(1.4);const fx=22+Math.random()*22;const flag=new THREE.Group();add(cyl(.12,.12,6,0x555555,6),0,3,0,flag);const fl=add(box(2.6,1.5,.06,0xFF2D2D),1.3,5.2,0,flag);add(flag,fx,0,0);
+  const g=add(xray(glider('lil')),hillX,hillH+.4,0);g.scale.setScalar(1);
+  // 무게중심(모형 상자 가운데)을 기준으로 돌려 보기
+  const CGo=new THREE.Box3().setFromObject(g,true).getCenter(V3()).sub(g.position);const CG=()=>g.position.clone().add(CGo);const fx=22+Math.random()*22;const flag=new THREE.Group();add(cyl(.12,.12,6,0x555555,6),0,3,0,flag);const fl=add(box(2.6,1.5,.06,0xFF2D2D),1.3,5.2,0,flag);add(flag,fx,0,0);
   tag3(D('여기에 내려앉기','Hạ cánh ở đây','Land here'),()=>V3(fx,6.4,0),'cyan');const aim=add(arrow(0xFF7A00,.09),hillX,hillH+1.3,0);aim.visible=false;
-  orbitOn=false;const gh=x=>Math.max(0,hillH*(1-Math.abs(x-hillX)/12));let st='aim',x=hillX,y=hillH+.4,vx=0,vy=0,tries=0,best=1e9,p0=null,pull=[0,0];
+  orbitOn=true;const gh=x=>Math.max(0,hillH*(1-Math.abs(x-hillX)/12));let st='aim',x=hillX,y=hillH+.4,vx=0,vy=0,tries=0,best=1e9,p0=null,pull=[0,0];
   const sc=chip(()=>`${T(D('남은 기회','Lượt còn lại','Tries left'))} ${3-tries} · ${best<1e9?T(D('가장 가까움','Gần nhất','Best'))+' '+best.toFixed(1)+' m':''}`);
-  const span=fx-hillX+26,hf=2*Math.atan(Math.tan(20*DEG)*cam3.aspect);camTo({t:[(hillX+fx)/2+2,9,0],d:span/2/Math.tan(hf/2),yaw:Math.PI/2,pitch:.1},700);
-  vp.onpointerdown=e=>{if(st!=='aim'||e.target.id!=='gl')return;p0=[e.clientX,e.clientY];aim.visible=true};
-  vp.onpointermove=e=>{if(!p0)return;pull=[clamp((p0[0]-e.clientX)/12,-2,14),clamp((e.clientY-p0[1])/12,-6,10)];const sp=Math.hypot(pull[0],pull[1]);aim.set(sp*.35);aim.rotation.z=-Math.atan2(pull[0],pull[1])};
+  // 261120 눈앞에서 날리기: 언덕 위 던지는 사람 어깨 너머에서 보고, 날아가면 따라감
+  const NEAR=()=>({t:CG(),d:15,yaw:Math.PI-.35,pitch:.3});camTo(NEAR(),700);
+  const scr=v=>{const p=v.clone().project(cam3);const c=$('#gl');return[p.x*c.clientWidth/2,-p.y*c.clientHeight/2]};
+  const nearG=e=>{const r=$('#gl').getBoundingClientRect(),p=CG().project(cam3);return Math.hypot(r.left+(p.x+1)/2*r.width-e.clientX,r.top+(1-p.y)/2*r.height-e.clientY)<Math.max(110,r.width*.12)};
+  orbitBlock=e=>st==='aim'&&nearG(e);
+  vp.onpointerdown=e=>{if(st!=='aim'||e.target.id!=='gl'||!nearG(e))return;p0=[e.clientX,e.clientY];aim.visible=true};
+  vp.onpointermove=e=>{if(!p0)return;
+    // 새총처럼: 끈 반대쪽으로 날아감. 화면에서 끈 방향을 세상의 앞(x)·위(y)로 바꿈
+    const o=g.position,a=scr(o),ex=scr(o.clone().add(V3(1,0,0))),ey=scr(o.clone().add(V3(0,1,0)));const u=[ex[0]-a[0],ex[1]-a[1]],w=[ey[0]-a[0],ey[1]-a[1]];
+    const dx=p0[0]-e.clientX,dy=p0[1]-e.clientY,det=u[0]*w[1]-u[1]*w[0]||1;let A=(dx*w[1]-dy*w[0])/det,B=(u[0]*dy-u[1]*dx)/det;const n=Math.hypot(A,B)||1,len=Math.hypot(dx,dy)/12;
+    pull=[clamp(A/n*len,-2,14),clamp(B/n*len,-6,10)];const sp=Math.hypot(pull[0],pull[1]);aim.set(sp*.35);aim.rotation.z=-Math.atan2(pull[0],pull[1])};
   vp.onpointerup=()=>{if(!p0)return;p0=null;aim.visible=false;if(Math.hypot(pull[0],pull[1])<1)return;vx=pull[0];vy=pull[1];st='fly'};
   tick(dt=>{if(st!=='fly')return;const steps=3;for(let k=0;k<steps;k++){const h=dt/steps,v=Math.hypot(vx,vy)||.01;const ax=-.02*v*vx-.121*v*vy,ay=-9.81-.02*v*vy+.121*v*vx;vx+=ax*h;vy+=ay*h;x+=vx*h;y+=vy*h}
-    g.position.set(x,y,0);g.rotation.z=Math.atan2(vy,vx);g.man.position.z=Math.sin(performance.now()/300)*.1;
+    g.position.set(x,y,0);if(!camAnim){cam.t.lerp(CG(),.12)}g.rotation.z=Math.atan2(vy,vx);g.man.position.z=Math.sin(performance.now()/300)*.1;
     if(y<=gh(x)+.3&&!(x<hillX+.5&&vy>0)){st='land';y=gh(x)+.3;g.position.y=y;g.rotation.z=0;tries++;const d=Math.abs(x-fx);best=Math.min(best,d);sc.textContent=`${T(D('남은 기회','Lượt còn lại','Tries left'))} ${3-tries} · ${T(D('가장 가까움','Gần nhất','Best'))} ${best.toFixed(1)} m`;
       if(d<3){toast(D('명중!','Trúng đích!','Bullseye!'));say(D('깃발 바로 옆에 내려앉았어! 너무 세게도, 너무 위로도 아니게 던지는 게 비결이야.','Hạ cánh ngay cạnh lá cờ! Bí quyết là phóng không quá mạnh, không quá dốc.','Right next to the flag! The trick is not too hard and not too steep.'));done(0)}
       else if(x<fx)say(D(`${d.toFixed(0)}m 모자라. 조금 더 세게 당겨 봐.`,`Còn thiếu ${d.toFixed(0)} m. Kéo mạnh hơn chút nhé.`,`${d.toFixed(0)} m short. Pull a bit harder.`));else say(D(`${d.toFixed(0)}m 지나쳤어. 살살 당겨 봐.`,`Vượt quá ${d.toFixed(0)} m. Kéo nhẹ hơn nhé.`,`${d.toFixed(0)} m too far. Pull more gently.`));
-      later(()=>{if(tries>=3){tries=0;best=1e9}x=hillX;y=hillH+.4;g.position.set(x,y,0);st='aim';sc.textContent=`${T(D('남은 기회','Lượt còn lại','Tries left'))} ${3-tries}`},2200)}
-    if(x>fx+40){st='land';later(()=>{x=hillX;y=hillH+.4;st='aim'},800)}});
-  say(D('언덕 위 글라이더를 뒤로 끌었다가 놓아 봐! 깃발 옆에 내려앉으면 성공. 너무 위로 던지면 속도를 잃고 떨어져.','Kéo tàu lượn trên đồi về phía sau rồi thả ra! Hạ cánh cạnh lá cờ là thắng. Ném quá dốc sẽ mất tốc độ và rơi.','Pull the glider back and let go! Land next to the flag. Throw it too steep and it loses speed and drops.'))}
+      later(()=>{if(tries>=3){tries=0;best=1e9}x=hillX;y=hillH+.4;g.position.set(x,y,0);st='aim';camTo(NEAR(),900);sc.textContent=`${T(D('남은 기회','Lượt còn lại','Tries left'))} ${3-tries}`},2200)}
+    if(x>fx+40){st='land';later(()=>{x=hillX;y=hillH+.4;g.position.set(x,y,0);st='aim';camTo(NEAR(),900)},800)}});
+  say(D('언덕 위 글라이더를 손가락으로 잡고 뒤로 끌었다가 놓아 봐! 다른 곳을 끌면 글라이더 둘레로 화면이 돌아. 깃발 옆에 내려앉으면 성공. 너무 위로 던지면 속도를 잃고 떨어져.','Chạm giữ tàu lượn trên đồi, kéo về phía sau rồi thả ra! Kéo chỗ khác thì màn hình xoay quanh tàu lượn. Hạ cánh cạnh lá cờ là thắng. Ném quá dốc sẽ mất tốc độ và rơi.','Hold the glider, pull it back and let go! Drag anywhere else to turn the view around the glider. Land next to the flag. Throw it too steep and it loses speed and drops.'))}
 
 /* ================= 2장: 라이트 플라이어 뜯어보기 ================= */
 const PF={wingUpper:D('날개 길이 12.3m. 가문비나무 뼈대에 무명천을 씌웠어.','Sải cánh 12,3 m. Khung gỗ vân sam bọc vải bông.','12.3 m long. A spruce frame covered with cotton cloth.'),
@@ -876,11 +935,208 @@ function ringGame(){const s=flight({alt:22,v:15,move:true,kR:.4});camTo({t:[8,22
       if(along>0&&along<3){if(side<5.2){R.ok=true;got++;speak(T(nice()));R.m.material.color.set(0x1FAE68);R.m.material.emissive.set(0x1FAE68)}else{R.m.material.emissive.set(0x555555)}cur++;if(rings[cur])rings[cur].m.material.emissive.set(0x39FF14)}}
     if(cur>=8||tm<=0){fin=true;toast(D(`${got}개 통과!`,`Qua ${got} vòng!`,`${got} rings!`));say(got>=6?D('멋진 조종사야! 기울여서 돌고, 코를 들어 높이를 맞췄어.','Phi công cừ khôi! Nghiêng để rẽ và ngóc mũi để chỉnh độ cao.','Great flying! You tilted to turn and lifted the nose to climb.'):D('다시 해 볼까? 기울이면 그쪽으로 돌아. ◀ ▶ 위의 놀이 버튼으로 다시 시작할 수 있어.','Thử lại nhé? Nghiêng về bên nào thì rẽ bên đó.','Try again? Tilt the way you want to turn.'));if(got>=6)done(3)}});
   say(D('오른쪽 아래 동그란 손잡이를 움직이거나 태블릿을 기울여서 초록 고리를 통과해! 옆으로 기울이면 그쪽으로 돌고, 위로 밀면 올라가.','Kéo núm tròn góc dưới bên phải hoặc nghiêng máy tính bảng để bay qua vòng xanh! Nghiêng bên nào thì rẽ bên đó, đẩy lên thì bay lên.','Use the round stick at the bottom right, or tilt the tablet, to fly through the green ring! Tilt to turn, push up to climb.'))}
+/* ===== 261120 매끈한 여객기 견본 (A320급) — 익형 단면을 이어 붙인 날개 + 곡선으로 올라가는 날개 끝 ===== */
+// 익형(NACA 4자리) 둘레 점: [x(0 앞전→1 뒷전), y] 고리
+function foil(t,m=.02,p=.4,n=18){const P=[];const yt=x=>5*t*(.2969*Math.sqrt(x)-.126*x-.3516*x*x+.2843*x**3-.1036*x**4);
+  const cam=x=>m?(x<p?m/p/p*(2*p*x-x*x):m/(1-p)/(1-p)*(1-2*p+2*p*x-x*x)):0;
+  const xs=[];for(let i=0;i<=n;i++)xs.push((1-Math.cos(Math.PI*i/n))/2);
+  for(let i=n;i>=0;i--){const x=xs[i];P.push([x,cam(x)+yt(x)])}for(let i=1;i<n;i++){const x=xs[i];P.push([x,cam(x)-yt(x)])}return P}
+// 단면 이어 붙이기: st=[{o:V3(앞전), c:V3(시위 방향), s:V3(날개 길이 방향), ch:시위, t:두께비, m:캠버}]
+function loft(st,cap=true){const pos=[],idx=[];let N=0;
+  st.forEach(S=>{const F=foil(S.t,S.m??.02);N=F.length;const nrm=S.c.clone().cross(S.s).normalize();
+    F.forEach(([x,y])=>{const v=S.o.clone().addScaledVector(S.c,x*S.ch).addScaledVector(nrm,y*S.ch);pos.push(v.x,v.y,v.z)})});
+  for(let k=0;k<st.length-1;k++)for(let i=0;i<N;i++){const a=k*N+i,b=k*N+(i+1)%N,c=(k+1)*N+i,d=(k+1)*N+(i+1)%N;idx.push(a,c,b,b,c,d)}
+  if(cap){const L=st.length-1,cen=st[L].o.clone().addScaledVector(st[L].c,st[L].ch*.4);const ci=pos.length/3;pos.push(cen.x,cen.y,cen.z);for(let i=0;i<N;i++)idx.push(L*N+i,ci,L*N+(i+1)%N)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g}
+// 회전체(몸통·엔진): pr=[[축위치, 반지름]...] 를 x축 둘레로
+// 261120 고침: 회전체 점 순서가 코→꼬리(내림차순)면 면이 안쪽을 향해 속이 비쳐 보였음 → 오름차순으로 맞춤
+function latheX(pr,seg=40){if(pr.length>1&&pr[0][0]>pr[pr.length-1][0])pr=pr.slice().reverse();const g=new THREE.LatheGeometry(pr.map(([x,r])=>new THREE.Vector2(Math.max(r,.001),x)),seg);g.rotateZ(-Math.PI/2);g.computeVertexNormals();return g}
+// 반쪽 날개(오른쪽, +z): 앞전 25도 뒤로 젖힘, 엔진 자리에서 꺾임, 끝은 반지름 r로 휘어 올라가는 윙렛
+function halfWing(){const C=V3(-1,0,0),S0=V3(0,0,1),sw=Math.tan(25*DEG),st=[];
+  const P=(z,ch,t)=>({o:V3(.1-z*sw,0,z),c:C,s:S0,ch,t});
+  st.push(P(0,2.0,.15),P(.7,1.68,.14),P(1.4,1.36,.13),P(2.2,1.0,.115),P(2.9,.72,.105),P(3.4,.56,.1));
+  const R=.32,zt=3.4,xt=.1-zt*sw;for(let k=1;k<=6;k++){const a=k/6*Math.PI/2;const s=V3(0,Math.sin(a),Math.cos(a));
+    st.push({o:V3(xt-.08*k,R*(1-Math.cos(a)),zt+R*Math.sin(a)),c:C,s,ch:.56-.035*k,t:.1-.004*k,m:.01})}
+  const top=st[st.length-1];for(let k=1;k<=3;k++){st.push({o:top.o.clone().add(V3(-.12*k,.17*k,0)),c:C,s:V3(0,1,0),ch:top.ch-.075*k,t:.08,m:0})}
+  return loft(st)}
+function airliner(dih,col){const g=new THREE.Group();const cY=(col===0xE5322D||!col);
+  const W=M(0xF4F6F8,{roughness:.32,metalness:.15}),C=M(col||0xE5322D,{roughness:.38}),Y=M(cY?0xFFC72C:0xC9CED6,{roughness:.3,metalness:.35}),DK=M(0x18222D,{roughness:.25}),G=M(0xC3CAD3,{roughness:.4,metalness:.3});
+  // 몸통: 둥근 코 → 원통 → 위로 들린 꼬리
+  const fg=latheX([[3.35,0],[3.3,.1],[3.15,.2],[2.95,.29],[2.65,.36],[2.25,.405],[1.9,.42],[-1.6,.42],[-2.1,.39],[-2.6,.32],[-3.0,.22],[-3.35,.09],[-3.45,0]],48);
+  const p=fg.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i);if(x<-1.7)p.setY(i,p.getY(i)+(-1.7-x)*.17);if(x>2.5)p.setY(i,p.getY(i)-(x-2.5)*.07)}fg.computeVertexNormals();
+  g.add(new THREE.Mesh(fg,W));
+  // 창문 줄·조종실 창
+  for(let i=0;i<18;i++)for(const sd of[1,-1]){const wn=new THREE.Mesh(new THREE.CapsuleGeometry(.024,.026,3,8),DK);wn.position.set(2.0-i*.21,.12,sd*.416);g.add(wn)}
+  for(const sd of[1,-1]){const ck=box(.2,.09,.02,0x18222D);ck.position.set(2.86,.17,sd*.24);ck.rotation.y=sd*.55;ck.rotation.z=-.35;g.add(ck)}
+  // 날개(양쪽, 처든각) + 엔진·파일론
+  const hw=halfWing();
+  for(const sd of[1,-1]){const pv=new THREE.Group();pv.position.set(.85,-.24,sd*.28);pv.rotation.x=-sd*dih*DEG;g.add(pv);
+    const w=new THREE.Mesh(hw,W);w.scale.z=sd;pv.add(w);
+    // 윙렛 끝만 꼬리색
+    const ez=1.25*sd;const ng=latheX([[.62,.21],[.55,.26],[.3,.285],[-.2,.27],[-.45,.21],[-.6,.12]],32);const en=new THREE.Mesh(ng,Y);en.position.set(-.1,-.36,ez);pv.add(en);
+    const inl=new THREE.Mesh(new THREE.CircleGeometry(.2,28),DK);inl.rotation.y=Math.PI/2;inl.position.set(.53,-.36,ez);pv.add(inl);
+    const ex=new THREE.Mesh(latheX([[-.58,.13],[-.75,.07],[-.85,0]],24),G);ex.position.set(-.1,-.36,ez);pv.add(ex);const fan=new THREE.Mesh(new THREE.ConeGeometry(.07,.12,16),G);fan.rotation.z=-Math.PI/2;fan.position.set(.55,-.36,ez);pv.add(fan);
+    const py=new THREE.Mesh(loft([{o:V3(.25,-.2,ez),c:V3(-1,0,0),s:V3(0,1,0),ch:.75,t:.12,m:0},{o:V3(.0,.02,ez),c:V3(-1,0,0),s:V3(0,1,0),ch:.85,t:.1,m:0}],false),W);pv.add(py);
+    // 수평 꼬리날개
+    const tp=new THREE.Group();tp.position.set(-2.55,.2,sd*.12);tp.rotation.x=-sd*Math.max(dih,4)*DEG;g.add(tp);
+    const hs=new THREE.Mesh(loft([{o:V3(.05,0,0),c:V3(-1,0,0),s:V3(0,0,1),ch:.85,t:.1,m:0},{o:V3(-.55,0,1.3),c:V3(-1,0,0),s:V3(0,0,1),ch:.32,t:.09,m:0}]),W);hs.scale.z=sd;tp.add(hs)}
+  // 수직 꼬리날개(꼬리색)
+  const fin=new THREE.Mesh(loft([{o:V3(-1.85,.3,0),c:V3(-1,0,0),s:V3(0,1,0),ch:1.45,t:.11,m:0},{o:V3(-2.55,1.0,0),c:V3(-1,0,0),s:V3(0,1,0),ch:.95,t:.1,m:0},{o:V3(-3.05,1.55,0),c:V3(-1,0,0),s:V3(0,1,0),ch:.55,t:.09,m:0}]),C);g.add(fin);
+  g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});return g}
+/* ===== 261120 비행기의 진화 — 7기종 견본 모델 (실제 크기 m, 코는 +x, 위 +y, 오른쪽 +z) =====
+   매끈한 면: 몸통은 회전체(latheX), 날개·꼬리는 익형 단면 잇기(loft). 항공사 상표·글자는 넣지 않음. */
+const EV={};
+(()=>{
+const MM=(c,o)=>M(c,Object.assign({roughness:.4},o||{}));
+const ALU=()=>MM(0xC9CFD6,{roughness:.28,metalness:.65}),WHITE=()=>MM(0xF4F6F8,{roughness:.32,metalness:.12}),DARK=()=>MM(0x18222D,{roughness:.2,metalness:.2});
+// 날개: 단면 목록 [z, 앞전x, 시위, 두께비, y, 캠버] → 오른쪽 반쪽. pair()로 양쪽
+const wingHalf=(rows,o={})=>loft(rows.map(([z,x,ch,t,y=0,m=.02])=>({o:V3(x,y,z),c:V3(-1,0,0),s:V3(0,0,1),ch,t,m})),o.cap!==false);
+const finG=(rows)=>loft(rows.map(([y,x,ch,t])=>({o:V3(x,y,0),c:V3(-1,0,0),s:V3(0,1,0),ch,t,m:0})));
+function pair(g,geo,mat,{x=0,y=0,z=0,dih=0}={}){const out={};for(const sd of[1,-1]){const pv=new THREE.Group();pv.position.set(x,y,sd*z);pv.rotation.x=-sd*dih*DEG;const w=new THREE.Mesh(geo,mat);w.scale.z=sd;pv.add(w);g.add(pv);out[sd]=pv}return out}
+// 261120 고침: 창문·조종실 창을 몸통 겉면에 붙임(떠 있지 않게) — 옆에서 수평으로 쏜 선이 몸통에 닿는 자리로
+function snapWin(g,body){const rc=new THREE.Raycaster();body.updateMatrixWorld(true);const ws=[];g.children.forEach(o=>{if(o.userData.win)ws.push(o)});
+  ws.forEach(o=>{const sd=Math.sign(o.position.z)||1;rc.set(V3(o.position.x,o.position.y,sd*80),V3(0,0,-sd));const h=rc.intersectObject(body,false)[0];
+    if(!h){o.visible=false;return}const n=h.face.normal.clone();if(n.z*sd<0)n.negate();o.position.copy(h.point).addScaledVector(n,.012);o.quaternion.setFromUnitVectors(V3(0,0,sd),n)})}
+// 몸통 변형: 꼬리 들기 등
+function bend(geo,f){const p=geo.attributes.position;for(let i=0;i<p.count;i++){const r=f(p.getX(i),p.getY(i),p.getZ(i));if(r)p.setXYZ(i,r[0],r[1],r[2])}geo.computeVertexNormals();return geo}
+// 프로펠러: 날 n개, 반지름 r — x축으로 돎
+function prop(n,r,col=0x6B4A2B,hubC=0x9AA3AD){const g=new THREE.Group();const bl=loft([{o:V3(0,r*.12,.06*r),c:V3(0,0,-1),s:V3(0,1,0),ch:r*.14,t:.12,m:.03},{o:V3(0,r*.55,.07*r),c:V3(0,0,-1),s:V3(0,1,0),ch:r*.15,t:.1,m:.03},{o:V3(0,r,.03*r),c:V3(0,0,-1),s:V3(0,1,0),ch:r*.07,t:.08,m:.02}]);
+  const bm=MM(col,{roughness:.45});for(let i=0;i<n;i++){const b=new THREE.Mesh(bl,bm);b.rotation.x=i*Math.PI*2/n;g.add(b)}
+  const hub=new THREE.Mesh(latheX([[r*.22,0],[r*.16,r*.07],[0,r*.1],[-r*.06,r*.1]],20),MM(hubC,{metalness:.5,roughness:.3}));g.add(hub);return g}
+// 제트 엔진 통
+function jetPod(r,l,mat){const g=new THREE.Group();g.add(new THREE.Mesh(latheX([[l*.5,r*.82],[l*.47,r*.98],[l*.3,r],[-l*.2,r*.92],[-l*.42,r*.7],[-l*.5,r*.45]],32),mat));
+  const inl=new THREE.Mesh(new THREE.CircleGeometry(r*.8,28),DARK());inl.rotation.y=Math.PI/2;inl.position.x=l*.45;g.add(inl);
+  const sp=new THREE.Mesh(new THREE.ConeGeometry(r*.25,r*.4,18),ALU());sp.rotation.z=-Math.PI/2;sp.position.x=l*.47;g.add(sp);
+  const ex=new THREE.Mesh(latheX([[-l*.48,r*.42],[-l*.62,r*.25],[-l*.7,0]],20),MM(0x7D858F,{metalness:.6,roughness:.35}));g.add(ex);return g}
+// 261120 고침: 엔진을 날개 밑에 제대로 매달기 — 날개 앞전·시위·두께를 그 자리에서 계산해, 엔진 앞쪽 절반만 앞전 밖으로 나오고 기둥(파일론)은 엔진 위에서 날개 밑면까지 이어짐
+function hang(pv,rows,z,r,l,mat,sd){let k=0;while(k<rows.length-2&&rows[k+1][0]<z)k++;const a=rows[k],b=rows[k+1],f=(z-a[0])/(b[0]-a[0]);const LE=a[1]+(b[1]-a[1])*f,ch=a[2]+(b[2]-a[2])*f,t=a[3]+(b[3]-a[3])*f;
+  const lo=-.32*t*ch,x=LE+l*.12,y=lo-r-.38*r;const p=jetPod(r,l,mat);p.position.set(x,y,sd*z);pv.add(p);
+  const xf=x+l*.18,xb=LE-ch*.55;const py=new THREE.Mesh(loft([{o:V3(xf,y+r*.8,sd*z),c:V3(-1,0,0),s:V3(0,1,0),ch:xf-(x-l*.3),t:.14,m:0},{o:V3(LE-.2,lo+.25,sd*z),c:V3(-1,0,0),s:V3(0,1,0),ch:LE-.2-xb,t:.12,m:0}],false),mat);pv.add(py)}
+// 바퀴
+function wheel(r,w=.25*r){const g=new THREE.Group();const t=new THREE.Mesh(new THREE.TorusGeometry(r*.72,r*.28,12,28),MM(0x1E1E1E,{roughness:.8}));g.add(t);const h=new THREE.Mesh(new THREE.CylinderGeometry(r*.5,r*.5,w,20),MM(0xB8BEC6,{metalness:.5}));h.rotation.x=Math.PI/2;g.add(h);return g}
+const rod=(a,b,r,mat)=>{const d=b.clone().sub(a),L=d.length();const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L,8),mat);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V3(0,1,0),d.normalize());return m};
+function wires(g,pts,col=0x3A3A3A){const geo=new THREE.BufferGeometry().setFromPoints(pts);const l=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:col}));g.add(l)}
+// 창문 줄 (양쪽)
+function winRow(g,x0,x1,n,y,zr,w,h,mat){const m=mat||DARK();const geo=new THREE.CapsuleGeometry(Math.min(w,h)/2,Math.max(0,h-w),3,8);for(let i=0;i<n;i++)for(const sd of[1,-1]){const wn=new THREE.Mesh(geo,m);wn.userData.win=true;wn.position.set(x0+(x1-x0)*i/(n-1),y,sd*zr);g.add(wn)}}
+const spinOf=(g,props)=>{g.spin=dt=>props.forEach(p=>p.rotation.x+=dt*28)};
+
+/* 1909 블레리오 11호: 어깨 날개, 앞몸통만 천, 뒤는 뼈대, 3기통 엔진·나무 프로펠러, 바퀴 2개 */
+EV.bleriot=()=>{const g=new THREE.Group();const FAB=MM(0xE6DAB8,{roughness:.8}),WOOD=MM(0x8B5E34,{roughness:.6}),STEEL=MM(0x6E747B,{metalness:.6,roughness:.4});
+  // 앞몸통(천 덮인 상자, 끝이 좁아짐)
+  const box1=new THREE.Mesh(new THREE.BoxGeometry(2.6,.8,.74),FAB);box1.position.set(2.1,0,0);g.add(box1);
+  // 뒤 뼈대: 위·아래 세로대 4개가 꼬리로 모임
+  const A=[[.8,.4,.37],[.8,-.4,.37],[.8,.4,-.37],[.8,-.4,-.37]],T=x=>[[-3.6,.06,.05],[-3.6,-.06,.05],[-3.6,.06,-.05],[-3.6,-.06,-.05]][x];
+  A.forEach((a,i)=>g.add(rod(V3(...a),V3(...T(i)),.025,WOOD)));
+  const P=[];for(let k=1;k<6;k++){const f=k/6,x=.8+(-3.6-.8)*f,hy=.4+(.06-.4)*f,hz=.37+(.05-.37)*f;const c=[[x,hy,hz],[x,-hy,hz],[x,-hy,-hz],[x,hy,-hz]];
+    for(let i=0;i<4;i++)g.add(rod(V3(...c[i]),V3(...c[(i+1)%4]),.015,WOOD));P.push(V3(...c[0]),V3(...c[2]),V3(...c[1]),V3(...c[3]))}wires(g,P,0x555555);
+  // 엔진(부채꼴 3기통) + 프로펠러
+  const eg=new THREE.Group();eg.position.set(3.45,0,0);g.add(eg);[-.9,0,.9].forEach(a=>{const c=cyl(.09,.09,.45,0,12);c.material=STEEL;c.position.set(0,Math.cos(a)*.22,Math.sin(a)*.22);c.rotation.x=a;eg.add(c)});
+  const pr=prop(2,1.03,0x7A4E28);pr.position.set(3.75,0,0);g.add(pr);
+  // 날개(얇고 많이 휜 단면, 끝이 둥긂)
+  const wh=wingHalf([[0,2.95,2.0,.06,0,.06],[2.6,2.95,2.0,.06,0,.06],[3.5,2.85,1.75,.055,0,.06],[3.9,2.6,1.2,.05,0,.05]]);pair(g,wh,FAB,{x:0,y:.42,z:.36,dih:2});
+  // 날개 버팀 기둥(위) + 줄
+  const top=V3(1.9,1.25,0);g.add(rod(V3(1.9,.4,.3),top,.03,STEEL));g.add(rod(V3(1.9,.4,-.3),top,.03,STEEL));
+  const bot=V3(1.9,-1.05,0);const W=[];for(const sd of[1,-1])for(const z of[1.4,2.6,3.6]){W.push(top,V3(2.3,.5,sd*z),bot,V3(2.3,.42,sd*z))}wires(g,W);
+  // 바퀴 다리
+  for(const sd of[1,-1]){g.add(rod(V3(2.6,-.4,sd*.35),V3(2.7,-1.25,sd*.75),.04,STEEL));g.add(rod(V3(1.9,-.4,sd*.35),V3(2.7,-1.25,sd*.75),.04,STEEL));const w=wheel(.36);w.position.set(2.7,-1.3,sd*.85);g.add(w)}
+  g.add(rod(V3(-3,-.1,0),V3(-3.4,-.5,0),.03,WOOD));
+  // 꼬리: 수평 꼬리날개 + 작은 방향타
+  pair(g,wingHalf([[0,-2.75,.75,.06,0,0],[1.0,-2.85,.6,.05,0,0]]),FAB,{x:0,y:0,z:.04});
+  g.add(new THREE.Mesh(finG([[0,-3.4,.55,.06],[.55,-3.45,.45,.06],[.8,-3.55,.25,.05]]),FAB));
+  // 조종사 머리
+  const hd=new THREE.Mesh(new THREE.SphereGeometry(.14,16,12),MM(0x5A3B26));hd.position.set(1.15,.55,0);g.add(hd);
+  spinOf(g,[pr]);return g};
+
+/* 1927 스피릿 오브 세인트루이스: 높은 날개, 앞 유리 없음, 둥근 엔진(실린더 드러남), 은색 앞 덮개 */
+EV.spirit=()=>{const g=new THREE.Group();const SIL=MM(0xD3D7DC,{roughness:.55,metalness:.25}),NOSE=MM(0xBFC6CE,{metalness:.75,roughness:.25}),ST=MM(0x8D949C,{metalness:.5});
+  const fg=latheX([[4.0,.38],[3.85,.58],[3.3,.64],[1.8,.66],[0,.6],[-2.2,.36],[-3.9,.1],[-4.2,0]],24);bend(fg,(x,y,z)=>[x,y+(x<-1?(-1-x)*.05:0),z*.88]);
+  const BODY=new THREE.Mesh(fg,SIL);g.add(BODY);const nc=new THREE.Mesh(latheX([[4.05,.38],[3.9,.6],[2.8,.65],[2.75,0]],24),NOSE);nc.scale.z=.88;g.add(nc);
+  // 둥근 엔진 실린더 9개
+  for(let i=0;i<9;i++){const a=i/9*Math.PI*2;const c=cyl(.09,.11,.42,0,10);c.material=ST;c.position.set(4.0,Math.cos(a)*.48,Math.sin(a)*.42);c.rotation.x=a;g.add(c)}
+  const pr=prop(2,1.35,0xC8CDD3,0xAEB4BB);pr.position.set(4.3,0,0);g.add(pr);
+  // 옆 창(작게), 앞 유리 없음
+  for(const sd of[1,-1]){const wn=box(.5,.32,.02,0x1B2530);wn.position.set(.95,.3,sd*.56);g.add(wn)}
+  // 높은 날개(직사각형 + 둥근 끝) + 버팀대
+  pair(g,wingHalf([[0,2.3,2.1,.12,0,.03],[6.2,2.3,2.1,.11,0,.03],[6.9,2.15,1.7,.1,0,.03],[7.1,1.9,1.05,.09,0,.02]]),SIL,{y:.7,z:0,dih:1});
+  for(const sd of[1,-1]){g.add(rod(V3(1.9,-.5,sd*.5),V3(2.0,.68,sd*3.6),.05,ST));g.add(rod(V3(.6,-.5,sd*.5),V3(.5,.68,sd*3.6),.05,ST));
+    g.add(rod(V3(2.6,-.5,sd*.45),V3(2.5,-1.55,sd*1.35),.05,ST));g.add(rod(V3(1.5,-.5,sd*.45),V3(2.5,-1.55,sd*1.35),.05,ST));const w=wheel(.45);w.position.set(2.5,-1.6,sd*1.45);g.add(w)}
+  g.add(rod(V3(-3.7,-.05,0),V3(-3.9,-.45,0),.04,ST));
+  pair(g,wingHalf([[0,-2.9,1.05,.08,0,0],[1.5,-3.2,.8,.07,0,0]]),SIL,{y:.12,z:.08});
+  g.add(new THREE.Mesh(finG([[.1,-3.3,1.0,.08],[.9,-3.6,.8,.07],[1.25,-3.85,.45,.06]]),SIL));
+  spinOf(g,[pr]);return g};
+
+/* 1936 DC-3: 낮은 날개(끝이 좁고 앞전 뒤로), 둥근 엔진 덮개 2개, 프로펠러 3날, 꼬리바퀴 */
+EV.dc3=()=>{const g=new THREE.Group();const A=ALU();
+  const fg=latheX([[9.9,0],[9.75,.55],[9.3,.95],[8.4,1.2],[6.8,1.3],[0,1.3],[-4,1.12],[-7.5,.6],[-9.8,.18],[-10,0]],40);bend(fg,(x,y,z)=>[x,y+(x<-3?(-3-x)*.07:0)+(x>8.5?-(x-8.5)*.12:0),z]);const BODY=new THREE.Mesh(fg,A);g.add(BODY);
+  // 조종실 창
+  for(const sd of[1,-1]){const w=box(.85,.4,.04,0x18222D);w.position.set(8.55,.68,sd*.62);w.rotation.y=sd*.75;w.rotation.z=-.5;w.userData.win=true;g.add(w)}
+  winRow(g,5.2,-2.4,7,.35,1.29,.38,.5);
+  // 날개: 가운데 평평, 바깥쪽 들림
+  const inner=wingHalf([[0,4.6,5.1,.17],[5.6,3.9,3.9,.16]]);const outer=wingHalf([[0,0,3.9,.16],[6.8,-1.3,2.4,.12],[8.6,-1.95,1.25,.1]]);
+  pair(g,inner,A,{y:-.7,z:0});for(const sd of[1,-1]){const pv=new THREE.Group();pv.position.set(3.9,-.7,sd*5.6);pv.rotation.x=-sd*5*DEG;const w=new THREE.Mesh(outer,A);w.scale.z=sd;pv.add(w);g.add(pv)}
+  const props=[];for(const sd of[1,-1]){const z=sd*5.6;const n=new THREE.Mesh(latheX([[5.6,.62],[5.45,.82],[4.8,.88],[3,.8],[.3,.4],[-.3,0]],28),A);n.position.set(0,-.45,z);g.add(n);
+    const ring=new THREE.Mesh(new THREE.CircleGeometry(.6,24),DARK());ring.rotation.y=Math.PI/2;ring.position.set(5.62,-.45,z);g.add(ring);
+    const pr=prop(3,1.75,0x2A2D31,0xAAB1B9);pr.position.set(5.85,-.45,z);g.add(pr);props.push(pr);
+    const w=wheel(.62);w.position.set(3.4,-2.25,z);g.add(w);g.add(rod(V3(3.4,-.9,z),V3(3.4,-2.2,z),.1,MM(0x666C73,{metalness:.6})))}
+  const tw=wheel(.28);tw.position.set(-8.6,-1.05,0);g.add(tw);
+  pair(g,wingHalf([[0,-7.4,2.6,.1,0,0],[4.1,-8.6,1.3,.09,0,0]]),A,{y:.15,z:.4});
+  g.add(new THREE.Mesh(finG([[.6,-6.4,3.6,.11],[2.5,-8.0,2.4,.1],[4.1,-9.0,1.3,.09]]),A));
+  snapWin(g,BODY);spinOf(g,props);return g};
+
+/* 1952 코멧: 날씬한 몸통, 엔진 4개가 날개 뿌리 속에 묻힘, 둥근 코 */
+EV.comet=()=>{const g=new THREE.Group();const W=WHITE(),A=ALU(),B=MM(0x1F4FA8);
+  const fg=latheX([[14,0],[13.7,.6],[12.8,1.15],[11,1.48],[9,1.52],[-6,1.52],[-10,1.25],[-13,.6],[-14.3,.15],[-14.4,0]],44);bend(fg,(x,y,z)=>[x,y+(x<-7?(-7-x)*.06:0),z]);const BODY=new THREE.Mesh(fg,W);g.add(BODY);
+  for(const sd of[1,-1]){const w=box(1.1,.38,.05,0x18222D);w.position.set(12.0,.72,sd*.95);w.rotation.y=sd*.7;w.rotation.z=-.45;w.userData.win=true;g.add(w)}
+  winRow(g,9,-5,14,.42,1.52,.36,.46);const sl=new THREE.Mesh(new THREE.CylinderGeometry(1.54,1.54,17,40,1,true,Math.PI*.38,Math.PI*.06),B);sl.rotation.z=Math.PI/2;sl.position.x=2;g.add(sl);
+  // 두꺼운 날개 뿌리(엔진 묻힘) → 얇은 끝
+  const cw=pair(g,wingHalf([[0,4.6,9.2,.2],[4.6,2.6,7.0,.18],[10,-1.4,4.4,.12],[16.6,-5.4,2.0,.09],[17.4,-6.0,1.4,.08]]),W,{y:-.65,z:0,dih:3});
+  for(const sd of[1,-1])for(const z of[1.9,3.3]){const o=new THREE.Mesh(new THREE.CapsuleGeometry(.32,.45,4,14),DARK());o.rotation.x=Math.PI/2;o.position.set(4.6-z*2/4.6+.02,.05,sd*z);o.scale.set(.35,1,1);cw[sd].add(o)}
+  pair(g,wingHalf([[0,-10.6,3.4,.1,0,0],[5.2,-12.6,1.5,.09,0,0]]),W,{y:.5,z:.4,dih:4});
+  g.add(new THREE.Mesh(finG([[.9,-9.4,5,.11],[3.5,-11.5,3.4,.1],[5.4,-13.1,2.0,.09]]),W));
+  snapWin(g,BODY);return g};
+
+/* 1970 보잉 747: 앞쪽 2층 혹, 크게 뒤로 젖힌 날개, 엔진 4개 */
+EV.b747=()=>{const g=new THREE.Group();const W=WHITE(),R=MM(0xD7262E),A=ALU();
+  const fg=latheX([[35.3,0],[35,1.0],[34,2.0],[32,2.8],[29,3.2],[26,3.25],[-14,3.25],[-22,2.7],[-30,1.4],[-35,.3],[-35.3,0]],48);
+  const hump=(x)=>{if(x>33||x<0)return 0;const a=x>28?(33-x)/5:x<6?x/6:1;return 2.0*(a*a*(3-2*a))};
+  bend(fg,(x,y,z)=>[x,y+(y>0?hump(x)*(y/3.25)**1.3:0)+(x<-16?(-16-x)*.08:0),z]);const BODY=new THREE.Mesh(fg,W);g.add(BODY);
+  for(const sd of[1,-1]){const w=box(1.4,.55,.06,0x18222D);w.position.set(29.6,4.15,sd*1.55);w.rotation.y=sd*.55;w.rotation.z=-.45;w.userData.win=true;g.add(w)}
+  winRow(g,24,-18,40,.6,3.24,.32,.48);winRow(g,27.5,9,10,4.15,2.55,.32,.45);
+  const st=new THREE.Mesh(new THREE.CylinderGeometry(3.27,3.27,42,48,1,true,Math.PI*.32,Math.PI*.05),R);st.rotation.z=Math.PI/2;st.position.x=2;g.add(st);
+  const WR=[[0,13,15,.15],[9,4.6,9,.13],[22,-8.4,5.4,.1],[29.8,-15.4,3.6,.09]];const ww=pair(g,wingHalf(WR),W,{y:-1.6,z:0,dih:7});
+  for(const sd of[1,-1])for(const z of[11.8,20.6])hang(ww[sd],WR,z,1.35,6.6,W,sd);
+  pair(g,wingHalf([[0,-21.2,8,.1,0,0],[11,-28.6,3,.09,0,0]]),W,{y:1.2,z:.6,dih:7});
+  g.add(new THREE.Mesh(finG([[2,-19,11,.11],[9,-25.8,6.5,.1],[13.5,-30.6,3.6,.09]]),W));
+  snapWin(g,BODY);return g};
+
+/* 1976 콩코드: 얇은 오지(S자) 삼각 날개, 아래로 꺾인 코, 꼬리 수평날개 없음, 엔진 상자 2쌍 */
+EV.concorde=()=>{const g=new THREE.Group();const W=WHITE(),A=ALU();
+  const fg=latheX([[24,0],[24,1.18],[21,1.36],[17,1.45],[-18,1.45],[-25,1.0],[-29.5,.45],[-30.5,0]],40);const BODY=new THREE.Mesh(fg,W);g.add(BODY);
+  const nose=new THREE.Group();nose.position.set(24,0,0);nose.rotation.z=-5*DEG;g.add(nose);nose.add(new THREE.Mesh(latheX([[0,0],[0,1.18],[1.5,1.12],[3.5,.9],[5.5,.58],[7.2,.24],[8,0]],40),W));
+  for(const sd of[1,-1]){const w=box(1.0,.3,.05,0x18222D);w.position.set(23.2,.75,sd*.8);w.rotation.y=sd*.4;w.rotation.z=-.3;w.userData.win=true;g.add(w)}
+  winRow(g,18,-12,26,.3,1.45,.2,.28);
+  // 오지 삼각 날개: 앞전이 S자로 휘며 뒤로 감
+  pair(g,wingHalf([[0,14,36,.03,0,0],[1.5,8,30,.03,0,0],[3.5,1,23.5,.03,0,0],[6,-5,18,.03,0,.01],[9,-11,12.6,.03,0,.01],[11.5,-15.5,7.6,.028,0,.01],[12.8,-18,4.4,.025,0,.01]]),W,{y:-.9,z:0});
+  for(const sd of[1,-1]){const nb=new THREE.Mesh(new THREE.BoxGeometry(11,1.4,2.9),A);nb.position.set(-14.5,-1.95,sd*4.4);g.add(nb);
+    for(const dz of[-.72,.72]){const i=new THREE.Mesh(new THREE.PlaneGeometry(1.25,1.1),DARK());i.rotation.y=Math.PI/2;i.position.set(-8.95,-1.95,sd*4.4+dz);g.add(i);const e=cyl(.55,.6,1.4,0,16);e.material=MM(0x6F757D,{metalness:.7});e.rotation.z=Math.PI/2;e.position.set(-20.4,-1.95,sd*4.4+dz);g.add(e)}}
+  g.add(new THREE.Mesh(finG([[1,-16,12,.04],[6,-21.8,7,.04],[11.3,-26.5,3.2,.035]]),W));
+  snapWin(g,BODY);return g};
+
+/* 2007 A380: 몸통 전체 2층(키가 큰 단면), 큰 날개, 엔진 4개, 날개 끝 위아래 작은 판 */
+EV.a380=()=>{const g=new THREE.Group();const W=WHITE(),B=MM(0x1E3A7A),A=ALU();
+  const fg=latheX([[36.4,0],[36,1.3],[34.6,2.8],[32,3.7],[28,3.95],[-14,3.95],[-22,3.3],[-30,1.7],[-36,.3],[-36.4,0]],52);bend(fg,(x,y,z)=>[x,y*1.27+(x<-16?(-16-x)*.09:0)+(x>30?-(x-30)*.12:0),z*.92]);const BODY=new THREE.Mesh(fg,W);g.add(BODY);
+  for(const sd of[1,-1]){const w=box(1.5,.6,.06,0x18222D);w.position.set(33.4,2.7,sd*2.3);w.rotation.y=sd*.6;w.rotation.z=-.5;w.userData.win=true;g.add(w)}
+  winRow(g,29,-20,46,.4,3.62,.3,.46);winRow(g,27,-18,44,3.15,3.38,.3,.46);
+  const AR=[[0,15,18,.15],[11,5,11.5,.13],[26,-8.8,6.5,.1],[36.4,-17.4,4.2,.09]];const aw=pair(g,wingHalf(AR),W,{y:-2.6,z:0,dih:6});
+  for(const sd of[1,-1]){const pv=new THREE.Group();pv.position.set(0,-2.6,0);pv.rotation.x=-sd*6*DEG;g.add(pv);const f=new THREE.Mesh(new THREE.BoxGeometry(2.6,3.2,.15),W);f.position.set(-18.3,.35,sd*36.6);f.rotation.z=.25;pv.add(f)}
+  for(const sd of[1,-1])for(const z of[14.6,25.6])hang(aw[sd],AR,z,1.55,7.4,W,sd);
+  pair(g,wingHalf([[0,-23.5,10,.1,0,0],[15,-31.5,3.6,.09,0,0]]),W,{y:1.3,z:.8,dih:4});
+  g.add(new THREE.Mesh(finG([[3.5,-20.6,13,.11],[10,-27.6,8,.1],[15.5,-33.5,4,.09]]),B));
+  snapWin(g,BODY);return g};
+})();
 
 /* ================= 5장: 돌풍이 불면 ================= */
-function dihedralPlane(dih,col){const g=new THREE.Group();const body=M(col||0x2F7BEA,{roughness:.4});const f=new THREE.Mesh(new THREE.CapsuleGeometry(.35,3.6,6,16),body);f.rotation.z=Math.PI/2;g.add(f);
-  for(const sd of[1,-1]){const pv=new THREE.Group();const w=box(1.3,.08,4.2,0xF4F6F9);w.position.z=sd*2.2;pv.add(w);pv.rotation.x=-sd*dih*DEG;pv.position.set(.4,0,0);g.add(pv)}
-  add(box(.7,.06,1.8,0xF4F6F9),-2,0,0,g);const fin=add(box(.8,1,.06,col||0x2F7BEA),-2.1,.5,0,g);g.add(fin);return g}
+function dihedralPlane(dih,col){return airliner(dih,col)}
 function gustStreaks(){const fl=flowField({n:160,x0:14,x1:-14,ylo:-6,yhi:6,zw:30,size:.14});STAGE.add(fl);const S={dir:0,amt:0};
   tick(dt=>{S.amt=Math.max(0,S.amt-dt*.6);fl.step(dt,p=>{return{y:p.y0+20,v:6+S.amt*30,c:[1,1,1]}});fl.material.opacity=.25+S.amt*.7;fl.rotation.y=S.dir*Math.PI/2});return S}
 const DIH={V:{k:2.6,d:8,lab:D('V자 (위로)','Chữ V (vểnh lên)','V (tips up)')},F:{k:0,d:0,lab:D('평평','Phẳng','Flat')},A:{k:-.7,d:-6,lab:D('Λ자 (아래로)','Chữ Λ (rủ xuống)','Λ (tips down)')}};
@@ -898,12 +1154,12 @@ const CH5={
   ()=>{PL.position.y=20;drift(12);camTo({t:[0,20,0],d:12,yaw:-Math.PI/2+.2,pitch:.08},700);const G=gustStreaks();let t0=0,p=0,pr=0;glow('elevator',0xFF7A00,.7);tag3(PN.elevator,()=>P('elevator'));
     tick(dt=>{t0+=dt;if(t0>1&&t0<1.3){G.amt=1;pr+=dt*2}const c=t0>2?-p*2-pr:0;CTRL.elev=c*15;pr+=(c*1.2-1.2*pr+.3*p)*dt;p=clamp(p+pr*dt,-.6,.6);PL.rotation.z=p;if(t0>7){t0=0;p=0;pr=0}});
     say(D('아래에서 돌풍이 불면 코가 훅 들려. 그럴 땐 승강타를 내려서 코를 다시 눌러 줘.','Gió giật từ dưới làm mũi ngóc vụt lên. Khi đó hạ cánh lái độ cao để ấn mũi xuống lại.','A gust from below jerks the nose up. Lower the elevator to push the nose back down.'))},
-  ()=>{PL.visible=false;camTo({t:[0,20,0],d:16,yaw:Math.PI,pitch:.15},700);drift(10);const a=add(dihedralPlane(8,0x1FAE68),0,20,-5.5),b=add(dihedralPlane(-6,0xE5322D),0,20,5.5);
-    const sa=rollSim(a,2.6),sb=rollSim(b,-.7);let t0=0;tick(dt=>{t0+=dt;if(t0>1&&t0<1.35){sa.rr+=dt*2.6;sb.rr+=dt*2.6}sa.step(dt);sb.step(dt);if(t0>7){t0=0;sa.roll=sa.rr=sb.roll=sb.rr=0}});
-    tag3(D('V자: 스스로 돌아와','Chữ V: tự cân bằng lại','V: comes back by itself'),()=>a.position.clone().add(V3(0,2.4,0)));tag3(D('Λ자: 계속 기울어','Chữ Λ: cứ nghiêng thêm','Λ: keeps tipping'),()=>b.position.clone().add(V3(0,2.4,0)),'hot');
+  ()=>{PL.visible=false;camTo({t:[0,20,0],d:18,yaw:.12,pitch:.06},700);drift(10);const a=add(dihedralPlane(7,0xE5322D),0,20,-5),b=add(dihedralPlane(-6,0x2F7BEA),0,20,5);
+    const sa=rollSim(a,2.6),sb=rollSim(b,-.7);let t0=0;tick(dt=>{t0+=dt;if(t0>2.5&&t0<2.85){sa.rr+=dt*2.6;sb.rr+=dt*2.6}sa.step(dt);sb.step(dt);if(t0>8.5){t0=0;sa.roll=sa.rr=sb.roll=sb.rr=0}});
+    tag3(D('날개 끝이 위로(V자): 스스로 돌아와','Đầu cánh vểnh lên (chữ V): tự cân bằng lại','Tips up (V): comes back by itself'),()=>a.position.clone().add(V3(0,2.2,0)));tag3(D('Λ자: 계속 기울어','Chữ Λ: cứ nghiêng thêm','Λ: keeps tipping'),()=>b.position.clone().add(V3(0,2.2,0)),'hot');
     say(D('요즘 비행기 날개는 살짝 V자로 올라가 있어서 기울어도 스스로 돌아와. 라이트 플라이어 날개는 반대로 살짝 처져 있어서, 조종사가 쉬지 않고 잡아 줘야 했어.','Cánh máy bay ngày nay hơi vểnh chữ V nên nghiêng rồi tự trở lại. Cánh Wright Flyer thì hơi rủ xuống, nên phi công phải giữ liên tục.','Modern wings tilt up in a slight V, so the plane rights itself. The Flyer\'s wings drooped slightly, so the pilot had to hold it level all the time.'))}],()=>done(4))},
  try(){PL.visible=false;drift(10);camTo({t:[0,20,0],d:11,yaw:Math.PI,pitch:.12},700);let pl=null,s=null,kind='V';const G=gustStreaks();let over=0;
-  const build=k=>{kind=k;if(pl)STAGE.remove(pl);pl=add(dihedralPlane(DIH[k].d,k==='V'?0x1FAE68:k==='A'?0xE5322D:0x2F7BEA),0,20,0);s=rollSim(pl,DIH[k].k)};
+  const build=k=>{kind=k;if(pl)STAGE.remove(pl);pl=add(dihedralPlane(DIH[k].d,k==='V'?0xE5322D:k==='A'?0x2F7BEA:0x7A8794),0,20,0);s=rollSim(pl,DIH[k].k)};
   seg(Object.keys(DIH).map(k=>[k,DIH[k].lab]),'V',build);
   const row=document.createElement('div');row.className='row';ctl().appendChild(row);
   [[-1,D('← 돌풍','← Gió giật','← Gust')],[1,D('돌풍 →','Gió giật →','Gust →')]].forEach(([d,lab])=>{const b=document.createElement('button');b.className='bigbtn';const f=()=>b.textContent=T(lab);f();hudHooks.push(f);b.onclick=()=>{s.rr+=d*1.1;G.dir=d;G.amt=1};row.appendChild(b)});
@@ -938,6 +1194,8 @@ function gustGame(){const s=flight({alt:20,v:13,kR:-.5,kP:-.25});drift(12);camTo
 
 /* ================= 6장: 첫 비행 12초 ================= */
 const RAIL0=-3,RAIL1=15;
+// 261120 바닥 높이: 레일 위 1.3, 모래 위 1.18 (썰매 날이 땅에 닿는 높이)
+const BASE6=x=>(x>=RAIL0&&x<=RAIL1+.5?1.3:1.18)+GH(x,0);
 function railScene(){const r=add(box(RAIL1-RAIL0,.12,.22,0x6B4E2E),(RAIL0+RAIL1)/2,.06,0);const st=add(box(.4,.5,.6,0x6B4E2E),RAIL0+.2,.25,0);
   const sh=new THREE.Group();add(box(5,2.4,3.5,0x8E7A5A),0,1.2,0,sh);const roof=add(box(5.4,.15,4,0x5A4A3A),0,2.5,0,sh);add(sh,-8,0,-14);
   const sock=add(cyl(.04,.04,3,0x555555,6),RAIL1+3,1.5,-3);const ws=add(new THREE.Mesh(new THREE.ConeGeometry(.3,1.4,12,1,true),M(0xFF7A00,{side:THREE.DoubleSide})),RAIL1+2.4,2.9,-3);ws.rotation.z=Math.PI/2;
@@ -955,11 +1213,11 @@ const CH6={
     say(D('비행기에는 바퀴가 없었어. 그래서 18m 나무 레일 위를 달려서 떠올랐어. 형제들은 이 레일을 장난처럼 철도라고 불렀대.','Máy bay không có bánh xe, nên chạy trên đường ray gỗ dài 18 m để cất cánh. Hai anh em gọi đùa nó là “đường sắt”.','The plane had no wheels, so it ran along an 18 m wooden rail to take off. The brothers jokingly called it their railroad.'))},
   ()=>{railScene();windLines(35);camTo({t:[10,2,0],d:22,yaw:1.35,pitch:.12},700);CTRL.prop=1;const sc=chip(()=>'⏱ 0.0 s');let t0=0,x=0,y=1.3,fl=0;
     pole(12,D('떠오른 곳','Chỗ cất cánh','Lift-off'));pole(48.5,D('36.5m 착륙','Đáp ở 36,5 m','Landed at 36.5 m'));
-    tick(dt=>{t0+=dt;if(t0<2.6){x=12*(t0/2.6)**2}else if(fl<12){fl+=dt;x=12+36.5*(fl/12);y=1.3+Math.sin(Math.PI*fl/12)*2.2+Math.sin(fl*2.4)*.3;PL.rotation.z=Math.cos(fl*2.4)*.08}else{y=Math.max(1.3,y-dt*2);PL.rotation.z=0}
+    tick(dt=>{t0+=dt;if(t0<2.6){x=12*(t0/2.6)**2}else if(fl<12){fl+=dt;x=12+36.5*(fl/12);y=1.3+Math.sin(Math.PI*fl/12)*2.2+Math.sin(fl*2.4)*.3;PL.rotation.z=Math.cos(fl*2.4)*.08}else{y=Math.max(BASE6(x),y-dt*2);PL.rotation.z=0}
       if(t0>20){t0=0;fl=0;x=0;y=1.3}PL.position.set(x,y,0);sc.textContent=`⏱ ${fl.toFixed(1)} s`;cam.t.x+=(x+4-cam.t.x)*.05});
     say(D('오전 10시 35분, 오빌이 탔어. 12초 동안 36.5m를 날았어! 사람이 탄 동력 비행기가 스스로 떠올라 조종하며 난 첫 순간이야.','10 giờ 35 sáng, Orville cầm lái. Bay được 36,5 m trong 12 giây! Lần đầu tiên máy bay có động cơ chở người tự cất cánh và được điều khiển.','At 10:35 a.m. Orville took the controls. 12 seconds, 36.5 metres! The first time a piloted, powered plane took off on its own and was steered.'))},
   ()=>{railScene();windLines(35);camTo({t:[130,3,0],d:140,yaw:1.5,pitch:.14},900);CTRL.prop=1;pole(48.5,D('1번째 36.5m','Lần 1: 36,5 m','1st: 36.5 m'));pole(272,D('4번째 260m','Lần 4: 260 m','4th: 260 m'));const sc=chip(()=>'⏱ 0 s');let t0=0;
-    tick(dt=>{t0+=dt*5;const f=Math.min(59,Math.max(0,t0-3));const x=t0<3?12*(t0/3)**2:12+260*(f/59);PL.position.set(x,1.3+(f>0&&f<59?2.5+Math.sin(f*.7)*.6:0),0);sc.textContent=`⏱ ${f|0} s (×5)`;if(t0>75)t0=0});
+    tick(dt=>{t0+=dt*5;const f=Math.min(59,Math.max(0,t0-3));const x=t0<3?12*(t0/3)**2:12+260*(f/59);PL.position.set(x,BASE6(x)+(f>0&&f<59?2.5+Math.sin(f*.7)*.6:0),0);sc.textContent=`⏱ ${f|0} s (×5)`;if(t0>75)t0=0});
     say(D('그날 네 번이나 날았어. 마지막 네 번째는 윌버가 59초 동안 260m를 날았어! 그 뒤로 비행기는 점점 더 멀리, 더 높이 날게 돼.','Hôm đó họ bay bốn lần. Lần thứ tư, Wilbur bay 260 m trong 59 giây! Từ đó máy bay bay ngày càng xa, càng cao.','They flew four times that day. On the fourth, Wilbur flew 260 m in 59 seconds! From then on, planes flew farther and higher.'))}],()=>done(5))},
  try(){railScene();const W=windLines(30);camTo({t:[8,1.6,0],d:20,yaw:1.3,pitch:.14},700);let wind=30,st='ready',x=0,vg=0,y=1.3,fl=0,dist=0;
   slider(D('맞바람','Gió ngược','Headwind'),0,45,wind,' km/h',v=>{wind=v;W.set&&W.set(v)});
@@ -967,7 +1225,7 @@ const CH6={
   const rd=readout(()=>{const va=vg*3.6+wind;return `${T(D('땅 위 속도','Tốc độ trên đất','Ground speed'))} <b>${(vg*3.6)|0} km/h</b><br>${T(D('날개에 닿는 바람','Gió vào cánh','Air over wings'))} <b>${va|0} km/h</b> / 43<br>${st==='fly'?'✈️ '+T(D('날고 있어!','Đang bay!','Flying!'))+` ${fl.toFixed(1)} s · ${dist.toFixed(1)} m`:st==='fail'?'🛑 '+T(D('레일 끝! 바람이 더 필요해','Hết đường ray! Cần thêm gió','End of the rail! Needs more wind')):st==='done'?'🏁 '+T(D(`${dist.toFixed(1)}m 날았어 (오빌 36.5m)`,`Bay được ${dist.toFixed(1)} m (Orville 36,5 m)`,`Flew ${dist.toFixed(1)} m (Orville: 36.5 m)`)):''}`});const br=bar();
   tick(dt=>{if(st==='run'){vg+=1.1*dt;x+=vg*dt;if(vg*3.6+wind>=43){st='fly'}else if(x>RAIL1){st='fail';CTRL.prop=0}}
     else if(st==='fly'){fl+=dt;const gs=Math.max(.3,(46-wind)/3.6);x+=gs*dt;dist+=gs*dt;y=1.3+Math.sin(Math.PI*Math.min(1,fl/12))*2.2;if(fl>=12){st='done';CTRL.prop=0;if(dist>5){toast(D('비행 성공!','Bay thành công!','Flight!'));done(5)}}}
-    else if(st==='fail'){vg=Math.max(0,vg-3*dt);x+=vg*dt;y=1.3}else if(st==='done'){y=Math.max(1.3,y-dt*2)}
+    else if(st==='fail'){vg=Math.max(0,vg-3*dt);x+=vg*dt;y=BASE6(x)}else if(st==='done'){y=Math.max(BASE6(x),y-dt*2)}
     PL.position.set(x,y,0);br((vg*3.6+wind)/43);rd();if(!camAnim)cam.t.x+=(x+6-cam.t.x)*.05});
   say(D('맞바람 세기를 정하고 출발을 눌러 봐. 날개에 닿는 바람이 시속 43km가 넘어야 떠. 바람이 없으면 레일이 끝나도 못 떠!','Chọn sức gió ngược rồi bấm Xuất phát. Gió vào cánh phải trên 43 km/h mới bay. Không có gió thì hết đường ray vẫn chưa bay được!','Set the headwind and press Go. The air over the wings must pass 43 km/h to lift off. With no wind, the rail runs out first!'))},
  play(){runGames([pitchGame,()=>partsHunt(['engine','chains','propL','propR','skids'],5)],[D('몇 초 버틸까','Giữ được mấy giây','How long can you fly?'),GPARTS])},
@@ -995,7 +1253,7 @@ function pitchGame(){railScene();PL.position.set(0,4,0);camTo({t:[0,4,0],d:16,ya
   for(let d=10;d<=300;d+=10){add(cyl(.04,.04,1,0xFFFFFF,4),d,.5,2)}
   tick(dt=>{if(st!=='fly')return;t+=dt;const k=JOY.on?-JOY.y:TILT.live?-TILT.pitch:hold;pr+=(.9*p+k*1.4-.9*pr+(Math.random()-.5)*.8)*dt;p=clamp(p+pr*dt,-.9,.9);const gs=3;x+=gs*dt;y+=Math.sin(p)*11*dt;
     PL.position.set(x,y,0);PL.rotation.z=p;CTRL.elev=k*15;if(!camAnim){cam.t.set(x,Math.max(3,y),0)}sc.textContent=`⏱ ${t.toFixed(1)} s · ${T(D('최고','Kỷ lục','Best'))} ${best.toFixed(1)} s`;
-    if(y<1.3||Math.abs(p)>.75){st='end';PL.position.y=Math.max(1.3,y);if(t>best){best=t;store.set('best6',t.toFixed(1))}
+    if(y<BASE6(x)||Math.abs(p)>.75){st='end';PL.position.y=Math.max(BASE6(x),y);if(t>best){best=t;store.set('best6',t.toFixed(1))}
       const m=t>=59?D('윌버 기록도 넘었어! 59초!','Vượt cả kỷ lục 59 giây của Wilbur!','You beat Wilbur\'s 59 seconds!'):t>=12?D('오빌의 12초를 넘었어!','Vượt 12 giây của Orville!','You beat Orville\'s 12 seconds!'):D('라이트 플라이어는 코가 자꾸 들썩여서 다루기 어려웠어. 다시 해 볼까?','Wright Flyer hay bị chúc ngóc nên rất khó lái. Thử lại nhé?','The Flyer\'s nose kept bobbing, which made it hard to fly. Try again?');
       say(m);if(t>=12){toast(D('기록 달성!','Đạt kỷ lục!','Record!'));done(5)}later(()=>{x=0;y=4;p=0;pr=0;t=0;st='fly'},2600)}});
   say(D('라이트 플라이어는 코가 혼자서 자꾸 들리고 숙여져. ▲▼ 버튼(또는 손잡이·태블릿 앞뒤 기울기)으로 높이를 지켜! 오빌의 12초를 넘겨 봐.','Mũi Wright Flyer cứ tự ngóc lên chúc xuống. Dùng nút ▲▼ (hoặc núm, nghiêng máy) để giữ độ cao! Vượt qua 12 giây của Orville nhé.','The Flyer\'s nose keeps bobbing by itself. Use ▲▼ (or the stick or tablet tilt) to hold your height! Beat Orville\'s 12 seconds.'));joystick()}
@@ -1057,16 +1315,29 @@ function updSection(){if(!SECT.mode)return;const b=SECT.box||(SECT.box=secBox(SE
   if(SECT.mode==='x'){q.rotation.y=Math.PI/2;q.scale.set(sz.z*1.1,sz.y*1.1,1)}else if(SECT.mode==='y'){q.rotation.x=-Math.PI/2;q.scale.set(sz.x*1.1,sz.z*1.1,1)}else q.scale.set(sz.x*1.1,sz.y*1.1,1)}
 const SECN={x:D('횡단면 (앞뒤로 썰기)','Mặt cắt ngang','Cross-section'),y:D('평단면 (위에서 썰기)','Mặt cắt bằng','Top-down cut'),z:D('측단면 (옆으로 썰기)','Mặt cắt dọc','Side section')};
 const SECEND={x:[D('앞','trước','front'),D('뒤','sau','back')],y:[D('위','trên','top'),D('아래','dưới','bottom')],z:[D('오른쪽','phải','right'),D('왼쪽','trái','left')]};
-// 자르기 막대: 가운데(0)=자르지 않음, 왼쪽으로 끌면 위(앞·오른쪽) 끝에서 가운데까지, 오른쪽으로 끌면 아래(뒤·왼쪽) 끝에서 가운데까지
-function sectionUI(root,def,posWorld){let mode=def||null;const b=secBox(root);let v=0,sl=null,lab=null;
-  const apply=()=>{if(!mode)return;const mn=b.min[mode],mx=b.max[mode],md=(mn+mx)/2;SECT.box=b;
-    if(v===0){SECT.off=true}else if(v<0){SECT.off=false;SECT.side=-1;SECT.pos=mx-(-v/100)*(mx-md)}else{SECT.off=false;SECT.side=1;SECT.pos=mn+(v/100)*(md-mn)}updSection();lab&&lab()};
-  const v0=m=>{if(!(m&&posWorld!=null&&m===def))return -60;const mn=b.min[m],mx=b.max[m],md=(mn+mx)/2;return posWorld>=md?-Math.round(clamp((mx-posWorld)/(mx-md),0,1)*100):Math.round(clamp((posWorld-mn)/(md-mn),0,1)*100)};
-  seg([[null,D('자르지 않기','Không cắt','No cut')],['x',SECN.x],['z',SECN.z],['y',SECN.y]],mode,m=>{mode=m;if(!m){setSection(root,null);return}setSection(root,m,0,-1);v=v0(m);if(sl)sl.set(v);apply()});
-  const box=ctl();const l=document.createElement('label');const sp=document.createElement('span');const r=document.createElement('input');r.type='range';r.min=-100;r.max=100;r.step=1;r.value=v;
+// 261120 자르기 방향 선택: 단면 종류(횡·측·평)를 고른 뒤 방향 단추로 "기본 방향 / 반대 방향"을 고른다.
+// 막대 0 = 자르지 않음, 100 = 반대쪽 끝 가까이까지. 50 = 가운데 축.
+const SECDIR={x:[D('앞 → 뒤','trước → sau','front → back'),D('뒤 → 앞','sau → trước','back → front')],
+  y:[D('위 → 아래','trên → dưới','top → bottom'),D('아래 → 위','dưới → trên','bottom → top')],
+  z:[D('오른쪽 → 왼쪽','phải → trái','right → left'),D('왼쪽 → 오른쪽','trái → phải','left → right')]};
+function sectionUI(root,def,posWorld){let mode=def||null;const b=secBox(root);let v=0,dir=0,sl=null,lab=null,drow=null;
+  const apply=()=>{if(!mode)return;const mn=b.min[mode],mx=b.max[mode],L=mx-mn,f=Math.min(v,98)/100;SECT.box=b;
+    if(v===0){SECT.off=true}else{SECT.off=false;if(dir===0){SECT.side=-1;SECT.pos=mx-f*L}else{SECT.side=1;SECT.pos=mn+f*L}}updSection();lab&&lab()};
+  const v0=m=>{if(!(m&&posWorld!=null&&m===def))return 30;const mn=b.min[m],mx=b.max[m];return Math.round(clamp((dir===0?mx-posWorld:posWorld-mn)/(mx-mn),0,1)*100)};
+  seg([[null,D('자르지 않기','Không cắt','No cut')],['x',SECN.x],['z',SECN.z],['y',SECN.y]],mode,m=>{mode=m;if(drow)drow.style.display=m?'flex':'none';if(!m){setSection(root,null);lab&&lab();return}setSection(root,m,0,-1);dir=0;v=v0(m);if(sl)sl.set(v);apply()});
+  const box=ctl();
+  // 방향 단추 줄
+  drow=document.createElement('div');drow.className='row';drow.style.display=mode?'flex':'none';
+  const db=[0,1].map(k=>{const bt=document.createElement('button');bt.className='seg';bt.onclick=()=>{if(dir===k)return;dir=k;
+      // 같은 자리를 반대쪽에서 보이게: 자른 깊이를 반대 방향 기준으로 바꿔 줌
+      if(v>0)v=Math.max(2,100-v);if(sl)sl.set(v);apply()};drow.appendChild(bt);return bt});
+  box.appendChild(drow);
+  const l=document.createElement('label');const sp=document.createElement('span');const r=document.createElement('input');r.type='range';r.min=0;r.max=100;r.step=1;r.value=v;
   const ends=document.createElement('div');ends.style.cssText='display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#55677E';
-  lab=()=>{const e=mode?SECEND[mode]:[D('위','trên','top'),D('아래','dưới','bottom')];sp.innerHTML=`${T(D('자르기','Cắt','Cut'))} <b>${v===0?T(D('없음','không','none')):Math.abs(v)+'%'}</b>`;ends.innerHTML=`<span>← ${T(e[0])}${T(D('부터','',' first'))}</span><span>${T(D('가운데','giữa','centre'))}</span><span>${T(e[1])}${T(D('부터','',' first'))} →</span>`};
-  r.oninput=()=>{v=+r.value;if(Math.abs(v)<4)v=0;apply()};r.set=x=>{r.value=x;v=x;lab()};sl=r;l.append(sp,r,ends);box.appendChild(l);hudHooks.push(lab);lab();
+  lab=()=>{const m=mode||'y';const e=SECEND[m],d=SECDIR[m];db.forEach((bt,k)=>{bt.textContent=T(d[k])+' '+T(k?D('(반대)','(ngược)','(reverse)'):D('(기본)','(mặc định)','(default)'));bt.setAttribute('aria-pressed',k===dir)});
+    const st=e[dir],en=e[1-dir];sp.innerHTML=`${T(D('자르기','Cắt','Cut'))} <b>${v===0?T(D('없음','không','none')):v+'%'}</b> · ${T(d[dir])}`;
+    ends.innerHTML=`<span>${T(st)}${T(D(' 끝',' ',' end'))}</span><span>${T(D('가운데','giữa','centre'))}</span><span>${T(en)}${T(D(' 끝',' ',' end'))}</span>`};
+  r.oninput=()=>{v=+r.value;if(v<3)v=0;apply()};r.set=x=>{r.value=x;v=x;lab()};sl=r;l.append(sp,r,ends);box.appendChild(l);hudHooks.push(lab);lab();
   if(mode){v=v0(mode);r.set(v);apply()}
   tick(()=>updSection())}
 /* ---------- 빨간 형광 상자: 움직이는 동력 부품. 동력이 흐르는 순서대로 반짝(동력 릴레이) ---------- */
@@ -1085,22 +1356,31 @@ const AIRFRAME=['wingUpper','wingLower','elevator','rudder','struts','wires','ri
 function driveOnly(on){if(!FLY)return;AIRFRAME.forEach(k=>{if(PART[k])PART[k].visible=!on});if(!on&&PART.engine)PART.engine.traverse(m=>{if(m.isMesh&&!m.userData.cap)m.visible=true})}
 
 /* ================= 7장: 비행기의 진화 ================= */
-function evoModel(e){if(e.flyer){const g=FLY.clone();g.position.set(0,0,0);const w=new THREE.Group();g.position.copy(FLYOFF);w.add(g);w.userData.span=12.3;w.userData.len=6.4;return w}const m=makePlane(e.s);m.userData.span=e.s.span;m.userData.len=e.s.len;return m}
+function evoModel(e){if(e.flyer){const g=FLY.clone();g.position.set(0,0,0);const w=new THREE.Group();g.position.copy(FLYOFF);w.add(g);w.userData.span=12.3;w.userData.len=6.4;return w}const m=e.mk&&EV[e.mk]?EV[e.mk]():makePlane(e.s);m.userData.span=e.s.span;m.userData.len=e.s.len;return m}
 function onGround(m){const b=new THREE.Box3().setFromObject(m);m.position.y-=b.min.y-.05}
 let SNAPS=null;
 function snaps(){if(SNAPS)return SNAPS;const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(240,150);r.outputColorSpace=THREE.SRGBColorSpace;
   const sc=new THREE.Scene();sc.add(new THREE.HemisphereLight(0xffffff,0x998866,2.2));const dl=new THREE.DirectionalLight(0xffffff,2);dl.position.set(5,8,-6);sc.add(dl);const c=new THREE.PerspectiveCamera(30,240/150,.1,1000);
   SNAPS=EVO.map(e=>{const m=evoModel(e);sc.add(m);const b=new THREE.Box3().setFromObject(m),ctr=b.getCenter(V3()),sz=b.getSize(V3()).length();c.position.copy(ctr).add(V3(sz*.55,sz*.32,-sz*.75));c.lookAt(ctr);r.render(sc,c);const u=r.domElement.toDataURL();sc.remove(m);return u});
   r.dispose();return SNAPS}
-function flyModel(e){const m=evoModel(e);add(m,0,22,0);const sp=Math.max(m.userData.span,m.userData.len);camTo({t:[0,22,0],d:sp*1.35+6,yaw:-.75,pitch:.18},800);drift(Math.min(60,6+e.kmh/30));tick((dt,t)=>{m.spin&&m.spin(dt);m.position.y=22+Math.sin(t)*sp*.02;m.rotation.x=Math.sin(t*.7)*.04});return m}
+function flyModel(e){const m=evoModel(e);add(m,0,22,0);const sp=Math.max(m.userData.span,m.userData.len);camTo({t:[0,22,0],d:sp*1.35+6,yaw:-.75,pitch:e.mk==='concorde'?.42:e.mk==='b747'?.1:.18},800);drift(Math.min(60,6+e.kmh/30));tick((dt,t)=>{m.spin&&m.spin(dt);m.position.y=22+Math.sin(t)*sp*.02;m.rotation.x=Math.sin(t*.7)*.04});return m}
 const CH7={
  look(){stepper(EVO.map((e,i)=>()=>{if(e.flyer){PL.position.set(0,22,0);CTRL.prop=1;drift(8);camTo({t:[0,22,0],d:18,yaw:-.75,pitch:.18},800)}else{PL.visible=false;flyModel(e)}
    chip(D(`${e.y}년`,`Năm ${e.y}`,`${e.y}`),true);chip(D(`시속 ${e.kmh}km`,`${e.kmh} km/h`,`${e.kmh} km/h`));chip(D(`${e.seats}명`,`${e.seats} người`,`${e.seats} ${e.seats>1?'people':'person'}`));
    say(D(`${e.y}년, ${e.name.ko}. ${e.note.ko}.`,`Năm ${e.y}, ${e.name.vi}. ${e.note.vi}.`,`${e.y}: ${e.name.en}. ${e.note.en}.`))}),()=>done(6))},
  try(){let m=null;const show=i=>{const e=EVO[i];if(m){STAGE.remove(m);m=null}if(!e.flyer){m=evoModel(e);STAGE.add(m);m.position.z=-(m.userData.span/2+8);onGround(m)}const sp=e.flyer?14:Math.max(m.userData.span,m.userData.len);
     const spn=e.flyer?12.3:m.userData.span,W=e.flyer?16:spn+16,hf=2*Math.atan(Math.tan(20*DEG)*cam3.aspect);camTo({t:[0,e.flyer?2:spn*.1,e.flyer?0:-(spn+2)/2],d:Math.max(16,W/2/Math.tan(hf/2)*1.25+(e.flyer?0:m.userData.len*.4)),yaw:-.2,pitch:.22},700);say(D(`${e.y}년 ${e.name.ko}. 날개 폭 ${e.flyer?12.3:e.s.span}m. 라이트 플라이어(12.3m)와 크기를 비교해 봐!`,`${e.name.vi} (${e.y}), sải cánh ${e.flyer?12.3:e.s.span} m. So với Wright Flyer (12,3 m) xem!`,`${e.name.en} (${e.y}), wingspan ${e.flyer?12.3:e.s.span} m. Compare it with the Flyer (12.3 m)!`));cur=i;rd();br(e.kmh/2180)};
-  let cur=-1,rd=()=>{},br=()=>{};const s=slider(D('시간 여행','Du hành thời gian','Time travel'),0,EVO.length-1,0,'',i=>{if(i!==cur)show(i)});
-  rd=readout(()=>{const e=EVO[cur];return `<b>${e.y}</b> · ${T(e.name)}<br>${T(D('속도','Tốc độ','Speed'))} <b>${e.kmh} km/h</b> · ${T(D('사람','Người','People'))} <b>${e.seats}</b><br>${T(e.note)}`});br=bar();
+  // 261120 시간여행: 막대 대신 가운데 큰 설명판 + "◀ 이전 비행기 / 다음 비행기 ▶" 단추 + 연도 단추
+  let cur=-1,rd=()=>{},br=()=>{};const tt=document.createElement('div');tt.id='tt';$('#ov').appendChild(tt);
+  const go=i=>{if(i>=0&&i<EVO.length&&i!==cur)show(i)};
+  rd=()=>{if(cur<0)return;const e=EVO[cur],pv=EVO[cur-1],nx=EVO[cur+1];
+    tt.innerHTML=`<div class="tth">⏳ ${T(D('시간 여행','Du hành thời gian','Time travel'))} <span>${cur+1} / ${EVO.length}</span></div>
+      <div class="ttm"><button class="ttb" ${pv?'':'disabled'} data-d="-1">◀<small>${pv?pv.y+'<br>'+T(pv.name):''}</small></button>
+      <div class="ttc"><b>${e.y}</b><em>${T(e.name)}</em><p>${T(D('속도','Tốc độ','Speed'))} <b>${e.kmh} km/h</b> · ${T(D('사람','Người','People'))} <b>${e.seats}</b></p><i class="ttbar"><s style="width:${Math.max(3,e.kmh/2180*100)}%"></s></i><p>${T(e.note)}</p></div>
+      <button class="ttb" ${nx?'':'disabled'} data-d="1"><small>${nx?nx.y+'<br>'+T(nx.name):''}</small>▶</button></div>
+      <div class="tty">${EVO.map((x,k)=>`<button data-k="${k}" aria-pressed="${k===cur}">${x.y}</button>`).join('')}</div>`;
+    tt.querySelectorAll('.ttb').forEach(b=>b.onclick=()=>go(cur+ +b.dataset.d));tt.querySelectorAll('.tty button').forEach(b=>b.onclick=()=>go(+b.dataset.k))};
+  hudHooks.push(rd);
   tag3(D('라이트 플라이어','Wright Flyer','Wright Flyer'),()=>P('wingUpper').add(V3(0,.6,0)),'cyan');show(0);done(6)},
  play(){runGames([()=>{const im=snaps();orderGame(EVO.map((e,i)=>({y:e.y,name:e.name,img:im[i]})),6,D('가장 오래된 비행기부터 차례로 눌러 봐!','Bấm lần lượt từ máy bay cũ nhất!','Tap them from oldest to newest!'))},speedGame],[D('시대 순서 맞추기','Xếp theo thời gian','Put them in order'),D('누가 더 빠를까','Ai nhanh hơn','Which is faster?')])},
  learn(){learnG({title:D('비행기는 왜 발전했을까','Vì sao máy bay tiến bộ','Why planes kept improving'),view:{t:[0,1.3,0],d:15,yaw:-.8,pitch:.25},
@@ -1804,9 +2084,9 @@ render();
 })();
 </script>
 <style id="mm-book">
-/* 261120 아이 인터넷 책용: 메모 막대를 오른쪽 가운데 세로로(조이스틱·조종판과 안 겹치게) */
-.mm-bar{right:6px!important;bottom:auto!important;top:50%!important;transform:translateY(-50%);flex-direction:column!important}
+/* 261120 아이 인터넷 책용: 메모 막대를 왼쪽 목차 아래 빈 곳에(3D 조종판·조이스틱·말풍선과 안 겹치게) */
+.mm-bar{left:22px!important;right:auto!important;bottom:22px!important;top:auto!important;flex-wrap:wrap!important;max-width:220px;gap:4px!important}
 .mm-bar button{font-size:12px!important;padding:5px 7px!important}
-.mm-panel{right:70px!important;bottom:auto!important;top:12%!important}
-.mm-devmenu{right:70px!important;bottom:auto!important;top:30%!important}
+.mm-panel{left:22px!important;right:auto!important;bottom:110px!important}
+.mm-devmenu{left:22px!important;right:auto!important;bottom:110px!important}
 </style>
