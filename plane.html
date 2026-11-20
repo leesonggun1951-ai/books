@@ -207,6 +207,8 @@ body.darkbg #card button,body.darkbg #quiz button,body.darkbg #ctl button,body.d
 #game{width:min(75%,576px);padding:11px}#game .cardb{font-size:12px;min-height:88px}
 #tt{width:min(74%,544px)!important;padding:6px 8px!important}#tt .tth{font-size:14px!important}#tt .ttc>b{font-size:27px!important}#tt .ttc em{font-size:18px!important}#tt .ttc p{font-size:12px!important}#tt .ttb{flex-basis:94px!important;font-size:24px!important}#tt .ttb small{font-size:11px!important}#tt .tty button{font-size:11px!important}
 .mm-bar button{font-size:10px!important;padding:4px 6px!important}
+
+@media print{#fsBtn{display:none!important}}
 </style>
 
 <section id="cover">
@@ -350,6 +352,14 @@ $('#spk').onclick=()=>speak(T(sayObj),{force:true});
    else msg={ko:`들리면 성공! 안 들리면 태블릿 옆 소리 버튼으로 미디어 소리를 올려 주세요. (목소리 ${vs.length}개)`,vi:`Nghe được là ổn! Nếu không, hãy tăng âm lượng phương tiện. (${vs.length} giọng)`,en:`If you hear me, it works! If not, turn up the media volume. (${vs.length} voices)`};
    say(msg,true);speak([line,T(msg)],{force:true});if(lk)link()},900)};
  $('#langs').appendChild(sc);
+/* 261120 전체 화면 단추: 태블릿 크롬에서 주소창·아래 단추 줄을 숨김(누를 때만 켜짐 — 크롬 규칙) */
+{const de=document.documentElement,rq=de.requestFullscreen||de.webkitRequestFullscreen,ex=document.exitFullscreen||document.webkitExitFullscreen;
+ const isOn=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+ window.__goFull=()=>{try{if(!isOn()&&rq&&(document.fullscreenEnabled!==false)){const p=rq.call(de,{navigationUI:'hide'});p&&p.catch&&p.catch(()=>{})}}catch(e){}};
+ if(rq&&document.fullscreenEnabled!==false){const fb=document.createElement('button');fb.className='lg';fb.id='fsBtn';
+  const f=()=>{const on=isOn();fb.textContent=on?'🗗 '+T({ko:'전체 화면 끄기',vi:'Thoát toàn màn hình',en:'Exit full screen'}):'⛶ '+T({ko:'전체 화면',vi:'Toàn màn hình',en:'Full screen'});fb.setAttribute('aria-pressed',on)};
+  fb.onclick=()=>{try{if(isOn())ex&&ex.call(document);else window.__goFull()}catch(e){}};
+  document.addEventListener('fullscreenchange',f);document.addEventListener('webkitfullscreenchange',f);f();langHooks.push(f);$('#langs').appendChild(fb)}}
  window.__sndWarn=()=>{if(inApp||!HAS_SS){(ttsP||Promise.resolve(null)).then(t=>{if(!t)sc.click()}).catch(()=>sc.click())}};}
 
 /* ---------- 표지 ---------- */
@@ -1669,7 +1679,7 @@ const BOOK=[CH1,CH2,CH3,CH4,CH5,CH6,CH7,CH8,CH9];
 renderText();markDone();document.documentElement.lang=LANG;
 const startTxt=()=>$('#start').textContent=T(FLY?UI.start:UI.load);$('#start').disabled=true;startTxt();langHooks.push(startTxt);
 loadFlyer().then(()=>{$('#start').disabled=false;startTxt()}).catch(e=>{$('#start').textContent='⚠️ '+e.message});
-$('#start').onclick=()=>{if(!FLY)return;coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;resize();cam={t:V3(...OVER.t),d:OVER.d,yaw:OVER.yaw,pitch:OVER.pitch};say(UI.pick);setTimeout(()=>openCh(1),400);setTimeout(()=>window.__sndWarn&&window.__sndWarn(),2500)};
+$('#start').onclick=()=>{if(matchMedia('(pointer:coarse)').matches&&window.__goFull)window.__goFull();if(!FLY)return;coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;resize();cam={t:V3(...OVER.t),d:OVER.d,yaw:OVER.yaw,pitch:OVER.pitch};say(UI.pick);setTimeout(()=>openCh(1),400);setTimeout(()=>window.__sndWarn&&window.__sndWarn(),2500)};
 $('#homeBtn').onclick=()=>{stopAll();hideLead();$('#book').hidden=true;$('#cover').hidden=false;coverOn=true};
 requestAnimationFrame(loop);
 

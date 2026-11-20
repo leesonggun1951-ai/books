@@ -14,6 +14,8 @@
 button,a[href],.tag[style*="pointer"],[role=button]{box-shadow:0 3px 7px rgba(0,0,0,.55)!important;transition:box-shadow .15s}
 button:hover,a[href]:hover,.tag[style*="pointer"]:hover,[role=button]:hover{box-shadow:0 0 6px 2px #39FF14,0 0 16px 5px rgba(57,255,20,.75)!important}
 button:disabled,button:disabled:hover{box-shadow:0 2px 4px rgba(0,0,0,.35)!important}
+
+@media print{#fsBtn{display:none!important}}
 </style></head><body><meta name="google" content="notranslate">
 <title>릴리의 나비 책</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -234,7 +236,7 @@ function langBar(box){box.innerHTML='';LANGS.forEach(([k,lab])=>{const b=documen
 function renderText(){
   $('#coverTitle').textContent=T(UI.title);$('#coverSub').textContent=T(UI.sub);$('#start').textContent=T(UI.start);$('#railTitle').textContent=T(UI.title);
   $('#tiltHint').textContent=T(tiltLive?UI.tiltOn:UI.tiltPC);
-  document.querySelectorAll('.lg:not(#autoBtn):not(#sndBtn)').forEach(b=>{const k=LANGS.find(l=>l[1]===b.textContent)[0];b.setAttribute('aria-pressed',k===LANG)});
+  document.querySelectorAll('.lg:not(#autoBtn):not(#sndBtn):not(#fsBtn)').forEach(b=>{const k=LANGS.find(l=>l[1]===b.textContent)[0];b.setAttribute('aria-pressed',k===LANG)});
   document.querySelectorAll('.ch').forEach((b,i)=>{b.querySelector('.t').textContent=T(CH[i].t);const s=b.querySelector('.soon');if(s)s.textContent=T(UI.soon)});
   document.querySelectorAll('.tab').forEach((b,i)=>b.querySelector('.w').textContent=T(SEC[i].t));
   langHooks.forEach(f=>f());
@@ -308,6 +310,14 @@ $('#spk').onclick=()=>speak(T(sayObj),{force:true});
    else msg={ko:`들리면 성공! 안 들리면 태블릿 옆 소리 버튼으로 미디어 소리를 올려 주세요. (목소리 ${vs.length}개)`,vi:`Nghe được là ổn! Nếu không, hãy tăng âm lượng phương tiện. (${vs.length} giọng)`,en:`If you hear me, it works! If not, turn up the media volume. (${vs.length} voices)`};
    say(msg,true);speak([line,T(msg)],{force:true});if(lk)link()},900)};
  $('#langs').appendChild(sc);
+/* 261120 전체 화면 단추: 태블릿 크롬에서 주소창·아래 단추 줄을 숨김(누를 때만 켜짐 — 크롬 규칙) */
+{const de=document.documentElement,rq=de.requestFullscreen||de.webkitRequestFullscreen,ex=document.exitFullscreen||document.webkitExitFullscreen;
+ const isOn=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+ window.__goFull=()=>{try{if(!isOn()&&rq&&(document.fullscreenEnabled!==false)){const p=rq.call(de,{navigationUI:'hide'});p&&p.catch&&p.catch(()=>{})}}catch(e){}};
+ if(rq&&document.fullscreenEnabled!==false){const fb=document.createElement('button');fb.className='lg';fb.id='fsBtn';
+  const f=()=>{const on=isOn();fb.textContent=on?'🗗 '+T({ko:'전체 화면 끄기',vi:'Thoát toàn màn hình',en:'Exit full screen'}):'⛶ '+T({ko:'전체 화면',vi:'Toàn màn hình',en:'Full screen'});fb.setAttribute('aria-pressed',on)};
+  fb.onclick=()=>{try{if(isOn())ex&&ex.call(document);else window.__goFull()}catch(e){}};
+  document.addEventListener('fullscreenchange',f);document.addEventListener('webkitfullscreenchange',f);f();langHooks.push(f);$('#langs').appendChild(fb)}}
  window.__sndWarn=()=>{if(inApp||!HAS_SS){(ttsP||Promise.resolve(null)).then(t=>{if(!t)sc.click()}).catch(()=>sc.click())}};}
 
 /* ---------- 표지 ---------- */
@@ -319,7 +329,7 @@ addEventListener('deviceorientation',e=>{if(e.gamma==null)return;tiltLive=true;
 (function fly(t){if(coverOn){const el=$('#coverLily');lx+=(tx-lx)*.04;ly+=(ty-ly)*.04;const w=el.offsetWidth||180;
   const flap=reduce?1:.75+Math.abs(Math.sin(t/120))*.25;const tilt=Math.max(-20,Math.min(20,(tx-lx)*.05));
   el.style.transform=`translate(${lx-w/2}px,${ly-w*.4+Math.sin(t/400)*8}px) rotate(${tilt}deg) scaleX(${flap})`}requestAnimationFrame(fly)})(0);
-$('#start').onclick=()=>{coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;layout();say(UI.pick);setTimeout(()=>openCh(3),350);setTimeout(()=>window.__sndWarn&&window.__sndWarn(),2500)};
+$('#start').onclick=()=>{if(matchMedia('(pointer:coarse)').matches&&window.__goFull)window.__goFull();coverOn=false;$('#cover').hidden=true;$('#book').hidden=false;layout();say(UI.pick);setTimeout(()=>openCh(3),350);setTimeout(()=>window.__sndWarn&&window.__sndWarn(),2500)};
 $('#homeBtn').onclick=()=>{stopAll();hideLead();$('#book').hidden=true;$('#cover').hidden=false;coverOn=true};
 
 /* ---------- 레일·탭 ---------- */
